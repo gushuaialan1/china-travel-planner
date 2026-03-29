@@ -13,12 +13,14 @@ An AI-agent skill for planning domestic China trips and generating shareable iti
 
 ```bash
 # 1. Agent prepares input JSON (see Input Format below)
-# 2. Run the pipeline
-python3 scripts/tpf-pipeline.py --from-json input.json --with-metro --with-images --pretty
+# 2. Run the pipeline (searches Tavily + Fliggy, then generates page)
+python3 scripts/tpf-pipeline.py --from-json input.json --with-metro --pretty
 
 # Or step by step:
-python3 scripts/search_travel_info.py --from-json input.json --pretty -o search-results.json
-python3 page-generator/scripts/tpf-generate.py --from-json input.json --with-metro --with-images --pretty -o trip-data.json
+python3 scripts/search_travel_info.py --from-json input.json --pretty -o data/travel-info.json
+python3 scripts/search_flyai.py --from-json input.json --pretty -o data/flyai-data.json
+# → AI agent reviews travel-info.json, writes attraction descriptions
+python3 page-generator/scripts/tpf-generate.py --from-json input.json --with-metro --pretty -o data/trip-data.json
 python3 page-generator/scripts/tpf-cli.py validate
 python3 page-generator/scripts/tpf-cli.py build
 python3 page-generator/scripts/tpf-cli.py deploy --to gh-pages
@@ -31,19 +33,21 @@ User: "帮我规划清明去长沙玩三天"
   ↓
 Step 1: AI Agent understands intent, plans itinerary
   ↓
-Step 2: search_travel_info.py searches real travel guides (Tavily)
+Step 2: search_travel_info.py searches real trip plans from Tavily
   ↓
-Step 3: AI reviews and polishes search results ← KEY STEP
+Step 3: search_flyai.py searches Fliggy for hotels + attraction booking data
   ↓
-Step 4: AI outputs structured input JSON
+Step 4: AI reviews search results, writes attraction descriptions ← KEY STEP
   ↓
-Step 5: tpf-generate.py → trip-data.json (schema-compliant skeleton)
+Step 5: AI outputs structured input JSON
   ↓
-Step 6: tpf validate → checks against trip-schema.json
+Step 6: tpf-generate.py → trip-data.json (Fliggy images + booking links)
   ↓
-Step 7: tpf build → dist/index.html
+Step 7: tpf validate → checks against trip-schema.json
   ↓
-Step 8: tpf deploy → GitHub Pages (optional)
+Step 8: tpf build → dist/index.html
+  ↓
+Step 9: tpf deploy → GitHub Pages (optional)
 ```
 
 ### Step 3: AI Reviews Search Results (Important!)
@@ -139,6 +143,32 @@ Output:
 ```
 
 **How the agent should use search results**: Read the `sources[].content` to understand how real travelers planned their trips. Extract useful patterns (route order, time allocation, crowd avoidance tips) and incorporate them into your itinerary plan. Don't blindly copy summaries — they may be noisy or in English.
+
+### `scripts/search_flyai.py` — Search Fliggy for hotels & attractions
+
+Searches Fliggy via `flyai-cli` for real hotel listings and attraction booking data. Returns images, prices, and booking links.
+
+```bash
+python3 scripts/search_flyai.py --from-json input.json --pretty -o flyai-data.json
+```
+
+Requires: `flyai-cli` (`npm i -g @fly-ai/flyai-cli`). No API key needed.
+
+Output:
+```json
+{
+  "city": "长沙",
+  "hotels": [{"name": "...", "price": "¥334", "mainPic": "...", "bookingUrl": "https://a.feizhu.com/..."}],
+  "attractions": {
+    "岳麓山": {"found": true, "mainPic": "...", "bookingUrl": "...", "freeStatus": "FREE"}
+  }
+}
+```
+
+**How tpf-generate uses this data**:
+- **Images**: Fliggy images are preferred over Wikimedia. Wikimedia is fallback only.
+- **Booking links**: Added as `bookingUrl` to hotel and attraction cards (rendered as "立即预订"/"查看详情" buttons).
+- **Hotels**: At least 3 hotels are always shown — user's choice marked "已选", plus Fliggy recommendations with booking links.
 
 ### `page-generator/scripts/tpf-generate.py` — Generate trip-data.json
 

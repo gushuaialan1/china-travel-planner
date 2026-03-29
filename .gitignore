@@ -1,8 +1,8 @@
-*.pyc
-__pycache__/
 dist/
-output/
 *.egg-info/
 .env
-.venv/
+output/
+*.pyc
+__pycache__/
 .pytest_cache/
+.venv/

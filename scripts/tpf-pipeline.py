@@ -15,6 +15,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 SEARCH_SCRIPT = REPO_ROOT / "scripts" / "search_travel_info.py"
+FLYAI_SCRIPT = REPO_ROOT / "scripts" / "search_flyai.py"
 GENERATE_SCRIPT = REPO_ROOT / "page-generator" / "scripts" / "tpf-generate.py"
 CLI_SCRIPT = REPO_ROOT / "page-generator" / "scripts" / "tpf-cli.py"
 
@@ -106,6 +107,7 @@ def main() -> None:
 
     trip_data_path = data_dir / "trip-data.json"
     travel_info_path = data_dir / "travel-info.json"
+    flyai_data_path = data_dir / "flyai-data.json"
 
     steps: list[tuple[str, callable]] = []
 
@@ -130,9 +132,40 @@ def main() -> None:
 
             steps.append(("Searching travel info", step_search))
 
+        # FlyAI search (hotels + attractions from Fliggy)
+        def should_run_flyai() -> bool:
+            if args.skip_search:
+                return False
+            # Check if flyai-cli is available
+            import shutil
+            if not shutil.which("flyai"):
+                info("FlyAI step skipped: flyai-cli not installed")
+                return False
+            return True
+
+        if should_run_flyai():
+            def step_flyai() -> None:
+                run_command(
+                    [
+                        "python3",
+                        str(FLYAI_SCRIPT),
+                        "--from-json",
+                        str(pipeline_input_path),
+                        "--output",
+                        str(flyai_data_path),
+                        "--pretty",
+                    ]
+                )
+            steps.append(("Searching Fliggy for hotels & attractions", step_flyai))
+        else:
+            if not args.skip_search:
+                info("FlyAI step skipped")
+
         def step_generate() -> None:
             if travel_info_path.exists():
                 info(f"Generate step will reuse travel info: {travel_info_path}")
+            if flyai_data_path.exists():
+                info(f"Generate step will reuse FlyAI data: {flyai_data_path}")
             cmd = [
                 "python3",
                 str(GENERATE_SCRIPT),
