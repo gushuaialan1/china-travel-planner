@@ -33,7 +33,7 @@ Step 1: AI Agent understands intent, plans itinerary
   ↓
 Step 2: search_travel_info.py searches real travel guides (Tavily)
   ↓
-Step 3: AI enriches plan with search results (opening hours, tips, routes)
+Step 3: AI reviews and polishes search results ← KEY STEP
   ↓
 Step 4: AI outputs structured input JSON
   ↓
@@ -45,6 +45,29 @@ Step 7: tpf build → dist/index.html
   ↓
 Step 8: tpf deploy → GitHub Pages (optional)
 ```
+
+### Step 3: AI Reviews Search Results (Important!)
+
+After `search_travel_info.py` outputs `travel-info.json`, the **AI agent** should review the `summary` field for each attraction before passing it to `tpf-generate`. Specifically:
+
+1. **Language check**: All summaries must be in Chinese. If a summary is in English (Tavily sometimes returns English answers), replace it with your own knowledge or the best Chinese excerpt from `sources[].content`.
+2. **Accuracy check**: Cross-reference summaries against your training knowledge. If a summary contains wrong info (e.g. wrong ticket price, wrong opening hours), correct it.
+3. **Quality check**: Summaries should be 50-80 Chinese characters, covering: what the place is, opening hours, ticket price (if applicable), one practical tip. Remove promotional fluff, ad text, and irrelevant content.
+4. **Write back**: Update `travel-info.json` with the polished summaries, then let the pipeline continue.
+
+Example of a good summary:
+```
+"岳麓山风景区免费开放，需提前预约。开放时间6:00-22:00。岳麓书院门票40元，建议游览2小时。秋季红叶最佳。"
+```
+
+Example of a bad summary (don't use):
+```
+"Yuelu Mountain is open from 6:00 to 22:00. Free entry."  ← English
+"长沙著名景点"  ← Too generic
+"赏花发票抽奖赏银杏春节全攻略..."  ← Ad/noise from web scraping
+```
+
+This step is what makes the output actually useful. The toolchain generates a skeleton; **you make it real**.
 
 ## Input Format
 
@@ -180,11 +203,14 @@ python3 page-generator/scripts/wikimedia_image_search.py "橘子洲 长沙" --li
 
 ### Content quality
 
-When filling `trip-data.json`, write content that is:
+**You are the quality gate.** The toolchain (`tpf-generate`) produces a structural skeleton. The AI agent is responsible for ensuring all text content is:
+- **In Chinese**: This is a domestic China travel tool. No English descriptions.
 - **Specific**: "岳麓书院门票40元，建议游览2小时" not "著名景点，值得一去"
 - **Actionable**: Include opening hours, ticket prices, transport from hotel
 - **Honest**: Mention crowds, queues, seasonal closures
 - **Concise**: Card text should be scannable, not essays
+
+The toolchain has a basic fallback (`is_mostly_chinese` filter) that rejects obviously English content. But **don't rely on it** — review search results yourself before generating the page.
 
 ## Schema
 
