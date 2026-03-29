@@ -125,6 +125,37 @@ def search_images(query, limit=3):
         info(f"Image search failed: {e}")
     return None
 
+def normalize_side_trip(side_trip):
+    """Normalize side trip input to match trip schema and renderer."""
+    if isinstance(side_trip, dict):
+        required_fields = ("name", "date", "role", "description")
+        if all(field in side_trip for field in required_fields):
+            return side_trip
+
+        highlights = side_trip.get("highlights", [])
+        if isinstance(highlights, list):
+            description = "；".join(str(item) for item in highlights if item is not None).strip()
+        elif highlights is None:
+            description = ""
+        else:
+            description = str(highlights).strip()
+
+        return {
+            "name": str(side_trip.get("destination") or side_trip.get("name") or "").strip(),
+            "date": str(side_trip.get("duration") or side_trip.get("date") or "1天").strip(),
+            "role": str(side_trip.get("role") or "周边侧游").strip(),
+            "description": description or str(
+                side_trip.get("description") or "可作为周边顺路行程"
+            ).strip()
+        }
+
+    return {
+        "name": str(side_trip).strip(),
+        "date": "1天",
+        "role": "周边侧游",
+        "description": "可作为周边顺路行程"
+    }
+
 def generate_trip_data(parsed, options):
     """Generate complete trip-data.json structure."""
     
@@ -234,16 +265,10 @@ def generate_trip_data(parsed, options):
             }
         ]
 
-    side_trips_data = []
-    for side_trip in parsed.get("side_trips", []):
-        if isinstance(side_trip, dict):
-            side_trips_data.append(side_trip)
-        else:
-            side_trips_data.append({
-                "destination": str(side_trip),
-                "duration": "1天",
-                "highlights": ["可作为周边顺路行程"]
-            })
+    side_trips_data = [
+        normalize_side_trip(side_trip)
+        for side_trip in parsed.get("side_trips", [])
+    ]
 
     # Build final structure
     trip_data = {
