@@ -173,7 +173,7 @@ def parse_prompt(prompt):
             return False
         if re.search(r'\b(?:days?|nights?|budget|hotel|metro)\b', part, flags=re.IGNORECASE):
             return False
-        if re.search(r'(?:预算|住|酒店|宾馆|民宿|地铁|天|晚|日|小时|交通|机票|高铁)', part):
+        if re.search(r'(?:预算|^住|酒店|宾馆|民宿|地铁|\d+天|\d+晚|\d+日|小时|交通|机票|高铁)', part):
             return False
         if re.fullmatch(
             rf'(?:去|到|飞|前往|想去|准备去)?[\u4e00-\u9fa5]{{2,12}}(?:玩|旅游|旅行|逛){chinese_number_token_pattern}(?:天|日|晚)',
