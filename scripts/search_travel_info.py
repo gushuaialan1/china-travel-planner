@@ -23,7 +23,7 @@ from urllib import error, request
 
 
 SCRIPT_NAME = "search_travel_info"
-DEFAULT_QUERY_TEMPLATE = "{city} {attraction} 攻略 开放时间 门票 推荐"
+DEFAULT_QUERY_TEMPLATE = "{city} {attraction} 行程规划 几日游 路线安排 攻略"
 TAVILY_API_URL = "https://api.tavily.com/search"
 TAVILY_TIMEOUT_SECONDS = 10
 PREFERRED_CHINESE_DOMAINS = [

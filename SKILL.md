@@ -48,26 +48,20 @@ Step 8: tpf deploy → GitHub Pages (optional)
 
 ### Step 3: AI Reviews Search Results (Important!)
 
-After `search_travel_info.py` outputs `travel-info.json`, the **AI agent** should review the `summary` field for each attraction before passing it to `tpf-generate`. Specifically:
+After `search_travel_info.py` outputs `travel-info.json`, the **AI agent** should review the search results. Remember:
 
-1. **Language check**: All summaries must be in Chinese. If a summary is in English (Tavily sometimes returns English answers), replace it with your own knowledge or the best Chinese excerpt from `sources[].content`.
-2. **Accuracy check**: Cross-reference summaries against your training knowledge. If a summary contains wrong info (e.g. wrong ticket price, wrong opening hours), correct it.
-3. **Quality check**: Summaries should be 50-80 Chinese characters, covering: what the place is, opening hours, ticket price (if applicable), one practical tip. Remove promotional fluff, ad text, and irrelevant content.
-4. **Write back**: Update `travel-info.json` with the polished summaries, then let the pipeline continue.
+**Search results are for itinerary planning reference, NOT for attraction descriptions.**
 
-Example of a good summary:
+How to use them:
+1. **Read `sources[].content`** — these are real user trip plans from 小红书, 知乎, 马蜂窝 etc.
+2. **Extract planning patterns**: How did real travelers arrange their routes? How many days did they spend? What order did they visit attractions? What crowd tips did they share?
+3. **Incorporate into your plan**: Use these insights to improve your daily itinerary (day assignments, time allocation, route order).
+4. **Write attraction descriptions yourself**: Use your own knowledge to write 50-80 character Chinese descriptions for each attraction (opening hours, ticket price, highlights, practical tips). Don't copy from search results — they're often noisy web scrapes.
+
+Example of a good agent-written description:
 ```
 "岳麓山风景区免费开放，需提前预约。开放时间6:00-22:00。岳麓书院门票40元，建议游览2小时。秋季红叶最佳。"
 ```
-
-Example of a bad summary (don't use):
-```
-"Yuelu Mountain is open from 6:00 to 22:00. Free entry."  ← English
-"长沙著名景点"  ← Too generic
-"赏花发票抽奖赏银杏春节全攻略..."  ← Ad/noise from web scraping
-```
-
-This step is what makes the output actually useful. The toolchain generates a skeleton; **you make it real**.
 
 ## Input Format
 
@@ -117,9 +111,12 @@ Options:
 | `--pretty` | Pretty-print JSON |
 | `--deploy` | Deploy to GitHub Pages after build |
 
-### `scripts/search_travel_info.py` — Search travel guides
+### `scripts/search_travel_info.py` — Search real trip plans
 
-Searches Tavily for each attraction and returns structured guide data (opening hours, tickets, tips, routes).
+**Purpose**: Search for real user trip plans and itinerary references from platforms like 小红书, 知乎, 马蜂窝, etc. This is NOT for searching attraction info (opening hours, ticket prices) — the AI agent already knows that from its training data.
+
+**What to search**: Itinerary planning, route arrangements, day-by-day schedules, practical tips from real travelers.
+**What NOT to search**: Basic attraction descriptions, opening hours, ticket prices — use your own knowledge.
 
 ```bash
 python3 scripts/search_travel_info.py --city 长沙 --attractions 岳麓山 橘子洲 天心阁 --pretty
@@ -140,6 +137,8 @@ Output:
   }
 }
 ```
+
+**How the agent should use search results**: Read the `sources[].content` to understand how real travelers planned their trips. Extract useful patterns (route order, time allocation, crowd avoidance tips) and incorporate them into your itinerary plan. Don't blindly copy summaries — they may be noisy or in English.
 
 ### `page-generator/scripts/tpf-generate.py` — Generate trip-data.json
 
@@ -188,10 +187,11 @@ python3 page-generator/scripts/wikimedia_image_search.py "橘子洲 长沙" --li
 
 1. **Understand the request**: Extract city, dates, duration, budget, traveler type, must-visit places, constraints.
 2. **Make assumptions when info is missing**: Don't block on questions. State assumptions and give a draft plan. Only ask if critical info (destination) is truly unknown.
-3. **Search for real data**: Use `search_travel_info.py` to get opening hours, ticket prices, recommended routes, crowd tips.
-4. **Plan daily itineraries**: Assign attractions to days with morning/afternoon/evening segments. Consider geography (group nearby places).
-5. **Pick hotels**: Recommend areas near metro interchanges or central locations.
-6. **Output structured JSON**: Follow the Input Format above.
+3. **Search for real trip plans**: Use `search_travel_info.py` to find how real travelers planned similar trips. This gives you route ordering, time allocation, and crowd-avoidance insights — NOT attraction descriptions.
+4. **Write descriptions from your own knowledge**: For each attraction, write a concise Chinese description (50-80 chars) covering opening hours, ticket price, highlights. You already know this information.
+5. **Plan daily itineraries**: Assign attractions to days with morning/afternoon/evening segments. Consider geography (group nearby places). Use search results to validate your route order.
+6. **Pick hotels**: Recommend areas near metro interchanges or central locations.
+7. **Output structured JSON**: Follow the Input Format above.
 
 ### Planning heuristics
 
