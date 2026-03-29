@@ -305,6 +305,62 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Tianxin_Pavilion_in_Changsha_20250310.jpg/1280px-Tianxin_Pavilion_in_Changsha_20250310.jpg",
       "description": "兼顾小吃、步行和回程便利，是后半程住五一广场片区时很舒服的夜间活动区域。",
       "bestFor": ["夜宵", "步行", "本地氛围"]
+    },
+    {
+      "name": "黄兴广场",
+      "city": "长沙",
+      "type": "核心商圈节点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Changsha_Pedestrian_Street_3_July_2024C.jpg/1280px-Changsha_Pedestrian_Street_3_July_2024C.jpg",
+      "description": "长沙中心区的重要活动节点，适合作为第一晚或返程前的轻量散步区域。",
+      "bestFor": ["夜间散步", "商圈活动", "热身"]
+    },
+    {
+      "name": "岳阳楼片区",
+      "city": "岳阳",
+      "type": "历史地标片区",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Frontal_view_of_Yueyang_Tower%2C_Hunan%2C_China1.jpg",
+      "description": "岳阳最具代表性的城市名片，适合做成长沙往返的一日侧游核心目的地。",
+      "bestFor": ["高铁侧游", "历史地标", "轻量一日游"]
+    },
+    {
+      "name": "开福寺周边",
+      "city": "长沙",
+      "type": "城市历史片区",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Shanmen_of_Kaifu_Temple_in_Changsha%2C_picture1.jpg/1280px-Shanmen_of_Kaifu_Temple_in_Changsha%2C_picture1.jpg",
+      "description": "在长沙核心区里相对安静，适合与五一广场形成节奏反差的一段步行路线。",
+      "bestFor": ["历史氛围", "步行", "节奏放缓"]
+    },
+    {
+      "name": "株洲城市核心区",
+      "city": "株洲",
+      "type": "侧游城市动线",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Zhuzhou_Railway_Station_%2820160324144245%29.jpg/1280px-Zhuzhou_Railway_Station_%2820160324144245%29.jpg",
+      "description": "适合以紧凑型城市动线快速体验株洲，不额外拉长当天往返与补线任务。",
+      "bestFor": ["短线侧游", "城市观察", "效率优先"]
+    },
+    {
+      "name": "湘潭城区散步点",
+      "city": "湘潭",
+      "type": "轻量侧游节点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/58_Zhongchuang%2C_Xiangtan%2C_Hunan%2C_China.jpg/1280px-58_Zhongchuang%2C_Xiangtan%2C_Hunan%2C_China.jpg",
+      "description": "以轻量城市体验为主，适合和 3 号线覆盖任务合并完成，不追求大范围折返。",
+      "bestFor": ["轻量散步", "线路覆盖", "顺路侧游"]
+    },
+    {
+      "name": "长沙磁浮体验段",
+      "city": "长沙",
+      "type": "轨交通勤体验",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Shanmen_of_Kaifu_Temple_in_Changsha%2C_picture1.jpg/1280px-Shanmen_of_Kaifu_Temple_in_Changsha%2C_picture1.jpg",
+      "description": "作为 S2 线的独立体验段更清晰，适合放在补线收口日单独完成。",
+      "bestFor": ["轨交体验", "补线任务", "交通爱好"]
+    },
+    {
+      "name": "五一广场轻松返程前散步",
+      "city": "长沙",
+      "type": "返程前缓冲活动",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Changsha_Pedestrian_Street_3_July_2024C.jpg/1280px-Changsha_Pedestrian_Street_3_July_2024C.jpg",
+      "description": "在主要任务完成后适合作为返程前的轻量收尾，保留上午机动性。",
+      "bestFor": ["返程前活动", "缓冲", "轻松收尾"]
     }
   ],
   "tips": [

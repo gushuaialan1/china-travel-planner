@@ -22,10 +22,10 @@ import sys
 from pathlib import Path
 
 # Framework paths
-SCRIPT_DIR = Path(__file__).parent.resolve()
-FRAMEWORK_DIR = SCRIPT_DIR.parent / "page-generator"
-METRO_SCRIPT = FRAMEWORK_DIR.parent / "skills" / "china-travel-planner" / "scripts" / "fetch_subway_data.py"
-IMAGE_SCRIPT = FRAMEWORK_DIR / "scripts" / "wikimedia_image_search.py"
+SCRIPT_DIR = Path(__file__).resolve().parent
+FRAMEWORK_DIR = Path(__file__).resolve().parents[2]
+METRO_SCRIPT = FRAMEWORK_DIR / "scripts" / "fetch_subway_data.py"
+IMAGE_SCRIPT = FRAMEWORK_DIR / "page-generator" / "scripts" / "wikimedia_image_search.py"
 
 def error(msg):
     print(f"[tpf-generate] ❌ {msg}", file=sys.stderr)
@@ -36,6 +36,75 @@ def info(msg):
 
 def success(msg):
     print(f"[tpf-generate] ✅ {msg}")
+
+def parse_number_token(token):
+    """Parse Arabic digits, Chinese numerals, and common English number words."""
+    if not token:
+        return None
+
+    token = token.strip().lower()
+    if token.isdigit():
+        return int(token)
+
+    english_numbers = {
+        "zero": 0,
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+        "ten": 10,
+        "eleven": 11,
+        "twelve": 12,
+        "thirteen": 13,
+        "fourteen": 14,
+        "fifteen": 15,
+        "sixteen": 16,
+        "seventeen": 17,
+        "eighteen": 18,
+        "nineteen": 19,
+        "twenty": 20,
+    }
+    if token in english_numbers:
+        return english_numbers[token]
+
+    chinese_digits = {
+        "零": 0,
+        "〇": 0,
+        "一": 1,
+        "二": 2,
+        "两": 2,
+        "三": 3,
+        "四": 4,
+        "五": 5,
+        "六": 6,
+        "七": 7,
+        "八": 8,
+        "九": 9,
+    }
+
+    if token in chinese_digits:
+        return chinese_digits[token]
+
+    if all(char in "零〇一二两三四五六七八九十百" for char in token):
+        total = 0
+        current = 0
+        for char in token:
+            if char in chinese_digits:
+                current = chinese_digits[char]
+            elif char == "十":
+                total += (current or 1) * 10
+                current = 0
+            elif char == "百":
+                total += (current or 1) * 100
+                current = 0
+        return total + current
+
+    return None
 
 def parse_prompt(prompt):
     """Extract key info from natural language prompt."""
@@ -50,25 +119,53 @@ def parse_prompt(prompt):
         "budget": None,
         "side_trips": []
     }
-    
-    # Extract city (first 2-4 Chinese chars or English city name)
-    city_match = re.search(r'^([\u4e00-\u9fa5]{2,4}|[A-Za-z\s]+)', prompt)
-    if city_match:
-        result["city"] = city_match.group(1).strip()
-    
+
+    chinese_number_pattern = r'(\d+|[零〇一二两三四五六七八九十百]+)'
+    chinese_number_token_pattern = r'(?:\d+|[零〇一二两三四五六七八九十百]+)'
+    english_number_pattern = r'(\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)'
+    english_number_token_pattern = r'(?:\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)'
+
+    city_patterns = [
+        rf'(?:去|到|飞|前往|想去|准备去)\s*([\u4e00-\u9fa5]{{2,12}}?)(?=\s*(?:玩|旅游|旅行|逛|待|住|{chinese_number_token_pattern}\s*(?:天|日|晚)|[，,。！？\s]|$))',
+        rf'^([\u4e00-\u9fa5]{{2,12}}?)(?=\s*{chinese_number_token_pattern}\s*(?:天|日|晚))',
+        rf'(?:go\s+to|visit|travel\s+to|trip\s+to)\s+([A-Za-z][A-Za-z\s-]{{1,40}}?)(?=\s+(?:for\s+)?{english_number_token_pattern}\s+(?:days?|nights?)\b|\s*[,.]|$)',
+        rf'\bin\s+([A-Za-z][A-Za-z\s-]{{1,40}}?)(?=\s+(?:for\s+)?{english_number_token_pattern}\s+(?:days?|nights?)\b|\s*[,.]|$)',
+        rf'^([A-Za-z][A-Za-z\s-]{{1,40}}?)(?=\s+(?:for\s+)?{english_number_token_pattern}\s+days?\b)',
+    ]
+    for pattern in city_patterns:
+        city_match = re.search(pattern, prompt, flags=re.IGNORECASE)
+        if city_match:
+            result["city"] = city_match.group(1).strip(" ,，。")
+            break
+
     # Extract days/nights
-    days_match = re.search(r'(\d+)\s*天', prompt)
+    days_match = re.search(rf'{chinese_number_pattern}\s*(?:天|日)', prompt)
     if days_match:
-        result["days"] = int(days_match.group(1))
-    
-    nights_match = re.search(r'(\d+)\s*晚', prompt)
+        result["days"] = parse_number_token(days_match.group(1))
+    else:
+        days_match = re.search(rf'{english_number_pattern}\s+days?\b', prompt, flags=re.IGNORECASE)
+        if days_match:
+            result["days"] = parse_number_token(days_match.group(1))
+
+    nights_match = re.search(rf'{chinese_number_pattern}\s*晚', prompt)
     if nights_match:
-        result["nights"] = int(nights_match.group(1))
-    
+        result["nights"] = parse_number_token(nights_match.group(1))
+    else:
+        nights_match = re.search(rf'{english_number_pattern}\s+nights?\b', prompt, flags=re.IGNORECASE)
+        if nights_match:
+            result["nights"] = parse_number_token(nights_match.group(1))
+
     # Extract budget
-    budget_match = re.search(r'预算\s*(\d+)', prompt)
-    if budget_match:
-        result["budget"] = int(budget_match.group(1))
+    budget_patterns = [
+        r'预算\s*(?:约|大概|大约|在)?\s*[¥￥]?\s*(\d+)',
+        r'(?:budget|under|around)\s*(?:is\s*)?(?:cny|rmb|usd|\$|¥)?\s*(\d+)',
+        r'[¥￥$]\s*(\d+)'
+    ]
+    for pattern in budget_patterns:
+        budget_match = re.search(pattern, prompt, flags=re.IGNORECASE)
+        if budget_match:
+            result["budget"] = int(budget_match.group(1))
+            break
     
     # Extract attractions (between + signs or after commas)
     # Pattern: 西湖+灵隐寺 or 西湖、灵隐寺
@@ -77,7 +174,15 @@ def parse_prompt(prompt):
         attr_text = attractions_part.group(1)
         # Split by + or 、
         attractions = re.split(r'[+/、]', attr_text)
-        result["attractions"] = [a.strip() for a in attractions if a.strip()]
+        filtered_attractions = []
+        for attraction in attractions:
+            attraction = attraction.strip()
+            if not attraction:
+                continue
+            if re.match(r'^(预算|budget|住|酒店|hotel)', attraction, flags=re.IGNORECASE):
+                continue
+            filtered_attractions.append(attraction)
+        result["attractions"] = filtered_attractions
     
     # Extract hotel area
     hotel_match = re.search(r'住\s*([^，,]+)', prompt)
