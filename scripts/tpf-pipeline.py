@@ -131,6 +131,8 @@ def main() -> None:
             steps.append(("Searching travel info", step_search))
 
         def step_generate() -> None:
+            if travel_info_path.exists():
+                info(f"Generate step will reuse travel info: {travel_info_path}")
             cmd = [
                 "python3",
                 str(GENERATE_SCRIPT),

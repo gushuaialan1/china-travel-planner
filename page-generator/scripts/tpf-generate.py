@@ -166,7 +166,47 @@ def normalize_side_trip(side_trip):
         "image": ""
     }
 
-def generate_trip_data(parsed, options):
+def get_attraction_description(name, city, travel_info=None):
+    """Return attraction description from search results when available."""
+    summary = None
+    if isinstance(travel_info, dict):
+        results = travel_info.get("results")
+        if isinstance(results, dict):
+            attraction_info = results.get(name)
+            if isinstance(attraction_info, dict):
+                summary = attraction_info.get("summary")
+
+    if isinstance(summary, str) and summary.strip():
+        return summary.strip()
+    return f"{city}著名景点——{name}"
+
+
+def load_travel_info_for_output(output_path):
+    """Auto-load sibling travel-info.json when writing into an output data dir."""
+    if not output_path:
+        return None
+
+    output_file = Path(output_path).expanduser().resolve()
+    candidate_paths = [output_file.parent / "travel-info.json"]
+    if output_file.parent.name != "data":
+        candidate_paths.append(output_file.parent / "data" / "travel-info.json")
+
+    for candidate in candidate_paths:
+        if not candidate.exists():
+            continue
+        try:
+            with open(candidate, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            info(f"Loaded travel info: {candidate}")
+            return data
+        except json.JSONDecodeError as exc:
+            info(f"Travel info parse failed for {candidate}: {exc}")
+        except OSError as exc:
+            info(f"Travel info read failed for {candidate}: {exc}")
+    return None
+
+
+def generate_trip_data(parsed, options, travel_info=None):
     """Generate complete trip-data.json structure."""
     
     city = parsed.get("city", "目的地")
@@ -192,7 +232,7 @@ def generate_trip_data(parsed, options):
             "city": city,
             "type": "景点",
             "image": image_url or "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-            "description": f"{city}著名景点",
+            "description": get_attraction_description(attr, city, travel_info=travel_info),
             "bestFor": ["观光", "拍照"]
         })
     
@@ -261,6 +301,13 @@ def generate_trip_data(parsed, options):
 
     def build_segments_for_day(day_index, day_attractions):
         if day_index == days - 1:
+            if day_attractions:
+                last_stop = day_attractions[0]["name"]
+                return {
+                    "morning": [f"退房，前往{last_stop}"],
+                    "afternoon": ["返程"],
+                    "evening": []
+                }
             return {
                 "morning": ["退房整理行李"],
                 "afternoon": ["返程"],
@@ -322,7 +369,12 @@ def generate_trip_data(parsed, options):
 
     hero_image = str(parsed.get("heroImage") or "").strip()
     if options.get("with_images") and not hero_image:
-        hero_image = search_images(f"{city} 城市风景", limit=1) or ""
+        hero_image = search_images(f"{city} 城市风景", limit=1)
+        if not hero_image:
+            hero_image = search_images(f"{city} skyline", limit=1)
+        if not hero_image:
+            hero_image = search_images(f"{city} city view", limit=1)
+        hero_image = hero_image or ""
 
     # Build final structure
     trip_data = {
@@ -395,8 +447,9 @@ def main():
         "with_metro": args.with_metro,
         "with_images": args.with_images
     }
-    
-    trip_data = generate_trip_data(parsed, options)
+
+    travel_info = load_travel_info_for_output(args.output)
+    trip_data = generate_trip_data(parsed, options, travel_info=travel_info)
     
     # Output
     indent = 2 if args.pretty else None
