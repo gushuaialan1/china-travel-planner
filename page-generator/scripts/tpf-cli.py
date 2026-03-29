@@ -121,11 +121,13 @@ def cmd_build(args):
     theme_js = (TEMPLATES_DIR / "themes" / "light.js").read_text(encoding="utf-8")
     renderer_js = (TEMPLATES_DIR / "trip-renderer.js").read_text(encoding="utf-8")
 
-    # Replace external script refs with inline
-    # Remove the external script tags
+    # Replace external script refs with inline versions
     import re
-    html = re.sub(r'<script src="[^"]*trip-renderer\.js"[^>]*></script>', '', html_template)
-    html = re.sub(r'<script src="[^"]*light\.js"[^>]*></script>', '', html_template)
+    html = html_template
+    # Remove ALL script tags at the bottom (external refs + the init block)
+    html = re.sub(r'<script src="[^"]*trip-renderer\.js"[^>]*></script>\s*', '', html)
+    html = re.sub(r'<script src="[^"]*light\.js"[^>]*></script>\s*', '', html)
+    html = re.sub(r'<script>\s*TripRenderer\.init\(\{[^}]*\}\);\s*</script>\s*', '', html)
 
     # Insert inline scripts before closing </body>
     inline_scripts = f"""
