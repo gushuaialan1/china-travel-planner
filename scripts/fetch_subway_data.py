@@ -6,6 +6,8 @@ from typing import Dict, List, Tuple
 
 import requests
 
+import time
+
 INDEX_URL = "http://map.amap.com/subway/index.html?&1100"
 DETAIL_URL = "http://map.amap.com/service/subway?srhdata={city_id}_drw_{cityname}.json"
 HEADERS = {
@@ -13,9 +15,24 @@ HEADERS = {
 }
 
 
+def fetch_with_retry(url: str, max_retries: int = 3) -> requests.Response:
+    """Fetch URL with retry logic."""
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=20)
+            resp.raise_for_status()
+            return resp
+        except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
+            last_error = e
+            if attempt < max_retries - 1:
+                wait_time = 2 ** attempt  # 1s, 2s, 4s
+                time.sleep(wait_time)
+    raise last_error
+
+
 def fetch_index() -> str:
-    resp = requests.get(INDEX_URL, headers=HEADERS, timeout=20)
-    resp.raise_for_status()
+    resp = fetch_with_retry(INDEX_URL)
     resp.encoding = "utf-8"
     return resp.text
 
@@ -49,8 +66,7 @@ def find_city(city_query: str, cities: List[Tuple[str, str, str]]) -> Tuple[str,
 
 def fetch_city_detail(city_id: str, cityname: str) -> Dict:
     url = DETAIL_URL.format(city_id=city_id, cityname=cityname)
-    resp = requests.get(url, headers=HEADERS, timeout=20)
-    resp.raise_for_status()
+    resp = fetch_with_retry(url)
     data = resp.json()
     return data
 

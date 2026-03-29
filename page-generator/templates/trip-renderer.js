@@ -73,7 +73,7 @@
     var attractions = day.attractions || [];
     setHTML('modal-gallery', attractions.length
       ? attractions.map(function (a) {
-          return '<img src="' + esc(a.image) + '" alt="' + esc(a.name) + '" class="h-48 w-full rounded-2xl object-cover lg:h-[220px]" />';
+          return '<img src="' + esc(a.image) + '" alt="' + esc(a.name) + '" class="h-48 w-full rounded-2xl object-cover lg:h-[220px]" loading="lazy" />';
         }).join('')
       : '<div class="rounded-2xl bg-white p-6 text-sm text-slate-500">暂无景点图。</div>');
 
@@ -111,6 +111,9 @@
   /* ── main render ────────────────────────────────────── */
 
   function render(data) {
+    // Reset metro color map on each render
+    _metroColorMap = {};
+
     // Build metro palette from data
     if (data.metroCoverage && data.metroCoverage.lines) {
       buildMetroColors(data.metroCoverage.lines);
@@ -126,7 +129,7 @@
     setText('hero-summary', data.hero.summary);
     var heroBg = document.getElementById('hero-bg');
     if (heroBg && data.hero.heroImage) {
-      heroBg.style.backgroundImage = "url('" + data.hero.heroImage + "')";
+      heroBg.style.backgroundImage = 'url(' + JSON.stringify(String(data.hero.heroImage)) + ')';
     }
 
     setHTML('hero-tags', (data.hero.tags || []).map(function (tag) {
@@ -149,7 +152,7 @@
     // Hotels
     setHTML('hotel-grid', data.hotels.map(function (h) {
       return '<article class="overflow-hidden ' + (theme().css && theme().css.card || '') + '">' +
-        '<img src="' + esc(h.image) + '" alt="' + esc(h.name) + '" class="h-52 w-full object-cover" />' +
+        '<img src="' + esc(h.image) + '" alt="' + esc(h.name) + '" class="h-52 w-full object-cover" loading="lazy" />' +
         '<div class="p-5"><div class="flex items-start justify-between gap-3"><div>' +
         '<div class="text-xs uppercase tracking-[0.2em] text-slate-400">' + esc(h.phase) + '</div>' +
         '<h3 class="mt-2 text-lg font-bold text-slate-900">' + esc(h.name) + '</h3></div>' +
@@ -202,7 +205,7 @@
     // Side trips
     setHTML('side-trips-list', data.sideTrips.map(function (s) {
       return '<article class="overflow-hidden ' + (theme().css && theme().css.card || '') + '">' +
-        '<img src="' + esc(s.image) + '" alt="' + esc(s.name) + '" class="h-48 w-full object-cover" />' +
+        '<img src="' + esc(s.image) + '" alt="' + esc(s.name) + '" class="h-48 w-full object-cover" loading="lazy" />' +
         '<div class="p-5"><div class="text-xs uppercase tracking-[0.2em] text-slate-400">' + esc(s.date) + '</div>' +
         '<h3 class="mt-2 text-xl font-bold text-slate-900">' + esc(s.name) + '</h3>' +
         '<div class="mt-2 text-sm text-tealsoft">' + esc(s.role) + '</div>' +
@@ -217,7 +220,7 @@
     // Attractions
     setHTML('attraction-grid', data.attractions.map(function (a) {
       return '<article class="overflow-hidden ' + (theme().css && theme().css.card || '') + '">' +
-        '<img src="' + esc(a.image) + '" alt="' + esc(a.name) + '" class="h-56 w-full object-cover" />' +
+        '<img src="' + esc(a.image) + '" alt="' + esc(a.name) + '" class="h-56 w-full object-cover" loading="lazy" />' +
         '<div class="p-5"><div class="text-xs uppercase tracking-[0.2em] text-slate-400">' + esc(a.city) + ' · ' + esc(a.type) + '</div>' +
         '<h3 class="mt-2 text-xl font-bold text-slate-900">' + esc(a.name) + '</h3>' +
         '<p class="mt-3 text-sm leading-7 text-slate-600">' + esc(a.description) + '</p>' +
@@ -260,9 +263,20 @@
       } else {
         var url = opts.dataUrl || './data/trip-data.json';
         fetch(url)
-          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            if (!r.ok) {
+              throw new Error('HTTP ' + r.status + ' ' + r.statusText);
+            }
+            return r.json();
+          })
           .then(render)
-          .catch(function (e) { console.error('[TripRenderer] Failed to load data:', e); });
+          .catch(function (e) {
+            console.error('[TripRenderer] Failed to load data:', e);
+            var errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#dc2626;color:white;padding:16px;text-align:center;z-index:9999;font-family:sans-serif;';
+            errorDiv.innerHTML = '加载行程数据失败: ' + esc(e.message) + '<br><small>请检查 trip-data.json 是否存在且格式正确</small>';
+            document.body.insertBefore(errorDiv, document.body.firstChild);
+          });
       }
     },
 

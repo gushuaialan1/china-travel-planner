@@ -170,6 +170,16 @@ def cmd_deploy(args):
     if not (project_dir / ".git").exists():
         error("Not a git repository. Run: git init")
 
+    # Check for uncommitted changes BEFORE git checkout --orphan
+    result = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=project_dir,
+        capture_output=True,
+        text=True
+    )
+    if result.stdout.strip():
+        error("Working directory has uncommitted changes. Commit or stash them first.")
+
     # Check remote
     result = subprocess.run(
         ["git", "remote", "-v"],

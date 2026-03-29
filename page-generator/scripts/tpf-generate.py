@@ -25,7 +25,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 FRAMEWORK_DIR = Path(__file__).resolve().parents[2]
 METRO_SCRIPT = FRAMEWORK_DIR / "scripts" / "fetch_subway_data.py"
-IMAGE_SCRIPT = FRAMEWORK_DIR / "page-generator" / "scripts" / "wikimedia_image_search.py"
+IMAGE_SCRIPT = SCRIPT_DIR / "wikimedia_image_search.py"
 
 def error(msg):
     print(f"[tpf-generate] ❌ {msg}", file=sys.stderr)
@@ -167,33 +167,72 @@ def parse_prompt(prompt):
             result["budget"] = int(budget_match.group(1))
             break
     
-    # Extract attractions (between + signs or after commas)
-    # Pattern: 西湖+灵隐寺 or 西湖、灵隐寺
-    attractions_part = re.search(r'[，,]([^，,]+?)(?:[,，]|$)', prompt)
-    if attractions_part:
-        attr_text = attractions_part.group(1)
-        # Split by + or 、
-        attractions = re.split(r'[+/、]', attr_text)
-        filtered_attractions = []
-        for attraction in attractions:
-            attraction = attraction.strip()
-            if not attraction:
-                continue
-            if re.match(r'^(预算|budget|住|酒店|hotel)', attraction, flags=re.IGNORECASE):
-                continue
-            filtered_attractions.append(attraction)
-        result["attractions"] = filtered_attractions
-    
-    # Extract hotel area
-    hotel_match = re.search(r'住\s*([^，,]+)', prompt)
-    if hotel_match:
-        result["hotel_area"] = hotel_match.group(1).strip()
-    
-    # Extract side trips (周边城市)
-    side_match = re.search(r'[+/]([^+/]+?)(?:[,，]|$)', prompt)
-    if side_match and ('+' in prompt or '、' in prompt):
-        # Check if looks like side trip (different city)
-        pass  # Simplified for now
+    # Extract attractions - enhanced patterns
+    attractions = []
+
+    # Pattern 1: "去/玩/游览 A、B、C" or "包括 A+B+C"
+    attr_match = re.search(r'(?:去|玩|游览|逛|打卡|包括|想去)\s*[:：]?\s*([^预算住，。]+?)(?:等|以及|和|与|，|。|$)', prompt)
+    if attr_match:
+        parts = re.split(r'[+、/,]', attr_match.group(1))
+        for part in parts:
+            part = part.strip()
+            if part and len(part) >= 2 and not re.match(r'^(预算|住|酒店|\d)', part):
+                attractions.append(part)
+
+    # Pattern 2: "景点：A、B、C"
+    if not attractions:
+        attr_match = re.search(r'景点[:：]\s*([^，。]+)', prompt)
+        if attr_match:
+            parts = re.split(r'[+、/,]', attr_match.group(1))
+            for part in parts:
+                part = part.strip()
+                if part and len(part) >= 2:
+                    attractions.append(part)
+
+    # Pattern 3: Fallback to comma-separated after city/days
+    if not attractions:
+        # Look for attractions after "N天" or city
+        attr_text = re.search(r'(?:天|晚|玩)\s*[:，,]?\s*([^预算住，。]{2,20}(?:[+、][^预算住，。]+)*)', prompt)
+        if attr_text:
+            parts = re.split(r'[+、/,]', attr_text.group(1))
+            for part in parts:
+                part = part.strip()
+                if part and len(part) >= 2 and not re.match(r'^(预算|住|酒店|\d)', part):
+                    attractions.append(part)
+
+    # Remove duplicates while preserving order
+    seen = set()
+    result["attractions"] = [a for a in attractions if not (a in seen or seen.add(a))]
+
+    # Extract hotel area - enhanced patterns
+    hotel_patterns = [
+        r'住\s*在?\s*([^，。,]+?)(?:附近|旁边|周边|，|。|$)',
+        r'住\s*([^，。,]{2,15}?)(?:酒店|宾馆|民宿)?(?:，|。|$)',
+        r'酒店.*?在\s*([^，。,]+)',
+        r'(?:住|酒店).*?([^，。]{2,10})(?:附近|片区|区域)',
+    ]
+    for pattern in hotel_patterns:
+        hotel_match = re.search(pattern, prompt)
+        if hotel_match:
+            hotel_area = hotel_match.group(1).strip(" ,，。附近旁边")
+            if hotel_area and len(hotel_area) >= 2:
+                result["hotel_area"] = hotel_area
+                break
+
+    # Extract side trips - enhanced patterns
+    side_patterns = [
+        r'(?:加上?|以及|和|连带|顺路|连同)\s*([^，。]{2,8})(?:方向|顺路|一起|一日游)?',
+        r'周边[城市]?[:：]?\s*([^，。]+)',
+        r'(?: cover|visit)\s+[^+]+[+\/]([^，。,]+)',
+    ]
+    for pattern in side_patterns:
+        side_match = re.search(pattern, prompt)
+        if side_match:
+            cities = re.split(r'[、/+，,]', side_match.group(1))
+            side_trips = [c.strip() for c in cities if len(c.strip()) >= 2]
+            if side_trips:
+                result["side_trips"] = side_trips
+                break
     
     return result
 
@@ -201,7 +240,7 @@ def fetch_metro_data(city):
     """Fetch metro data if city is supported."""
     if not METRO_SCRIPT.exists():
         return None
-    
+
     info(f"Fetching metro data for {city}...")
     try:
         result = subprocess.run(
@@ -212,7 +251,13 @@ def fetch_metro_data(city):
         )
         if result.returncode == 0:
             return json.loads(result.stdout)
-    except Exception as e:
+    except subprocess.TimeoutExpired:
+        info(f"Metro data fetch timed out after 30s")
+    except json.JSONDecodeError as e:
+        info(f"Metro data parse failed: {e}")
+    except FileNotFoundError:
+        info(f"Metro script not found: {METRO_SCRIPT}")
+    except subprocess.CalledProcessError as e:
         info(f"Metro data fetch failed: {e}")
     return None
 
@@ -220,7 +265,7 @@ def search_images(query, limit=3):
     """Search Wikimedia Commons for images."""
     if not IMAGE_SCRIPT.exists():
         return None
-    
+
     try:
         result = subprocess.run(
             ["python3", str(IMAGE_SCRIPT), query, "--limit", str(limit)],
@@ -232,7 +277,13 @@ def search_images(query, limit=3):
             data = json.loads(result.stdout)
             if isinstance(data, list) and len(data) > 0:
                 return data[0].get("thumbUrl") or data[0].get("url")
-    except Exception as e:
+    except subprocess.TimeoutExpired:
+        info(f"Image search timed out after 30s")
+    except json.JSONDecodeError as e:
+        info(f"Image search parse failed: {e}")
+    except FileNotFoundError:
+        info(f"Image search script not found: {IMAGE_SCRIPT}")
+    except subprocess.CalledProcessError as e:
         info(f"Image search failed: {e}")
     return None
 
