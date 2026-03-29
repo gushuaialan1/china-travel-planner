@@ -121,6 +121,10 @@ def cmd_build(args):
     theme_js = (TEMPLATES_DIR / "themes" / "light.js").read_text(encoding="utf-8")
     renderer_js = (TEMPLATES_DIR / "trip-renderer.js").read_text(encoding="utf-8")
 
+    # Escape </script> inside JS comments/strings to prevent early tag closure
+    renderer_js = renderer_js.replace('</script>', '<\\/script>')
+    theme_js = theme_js.replace('</script>', '<\\/script>')
+
     # Replace external script refs with inline versions
     import re
     html = html_template
