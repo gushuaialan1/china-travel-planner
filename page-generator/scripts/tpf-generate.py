@@ -166,39 +166,65 @@ def parse_prompt(prompt):
         if budget_match:
             result["budget"] = int(budget_match.group(1))
             break
-    
-    # Extract attractions - enhanced patterns
+
+    def looks_like_attraction(part):
+        part = part.strip(" ,，。；;:：")
+        if len(part) < 2:
+            return False
+        if re.search(r'\b(?:days?|nights?|budget|hotel|metro)\b', part, flags=re.IGNORECASE):
+            return False
+        if re.search(r'(?:预算|住|酒店|宾馆|民宿|地铁|天|晚|日|小时|交通|机票|高铁)', part):
+            return False
+        if re.fullmatch(
+            rf'(?:去|到|飞|前往|想去|准备去)?[\u4e00-\u9fa5]{{2,12}}(?:玩|旅游|旅行|逛){chinese_number_token_pattern}(?:天|日|晚)',
+            part
+        ):
+            return False
+        return True
+
+    def split_attraction_parts(text):
+        text = re.sub(r'^(?:景点|attractions?)\s*[:：]\s*', '', text, flags=re.IGNORECASE)
+        raw_parts = re.split(r'\s*(?:\+|、|/|，\s*(?=[\u4e00-\u9fa5A-Za-z])|,\s*(?=[A-Za-z]))\s*', text)
+        parts = []
+        for raw_part in raw_parts:
+            part = raw_part.strip(" ,，。；;:：")
+            if looks_like_attraction(part):
+                parts.append(part)
+        return parts
+
+    # Extract attractions
     attractions = []
 
-    # Pattern 1: "去/玩/游览 A、B、C" or "包括 A+B+C"
-    attr_match = re.search(r'(?:去|玩|游览|逛|打卡|包括|想去)\s*[:：]?\s*([^预算住，。]+?)(?:等|以及|和|与|，|。|$)', prompt)
-    if attr_match:
-        parts = re.split(r'[+、/,]', attr_match.group(1))
-        for part in parts:
-            part = part.strip()
-            if part and len(part) >= 2 and not re.match(r'^(预算|住|酒店|\d)', part):
-                attractions.append(part)
-
-    # Pattern 2: "景点：A、B、C"
-    if not attractions:
-        attr_match = re.search(r'景点[:：]\s*([^，。]+)', prompt)
+    explicit_patterns = [
+        r'(?:景点|attractions?)\s*[:：]\s*([^。；;]+)',
+    ]
+    for pattern in explicit_patterns:
+        attr_match = re.search(pattern, prompt, flags=re.IGNORECASE)
         if attr_match:
-            parts = re.split(r'[+、/,]', attr_match.group(1))
-            for part in parts:
-                part = part.strip()
-                if part and len(part) >= 2:
-                    attractions.append(part)
+            attractions.extend(split_attraction_parts(attr_match.group(1)))
+            if attractions:
+                break
 
-    # Pattern 3: Fallback to comma-separated after city/days
     if not attractions:
-        # Look for attractions after "N天" or city
-        attr_text = re.search(r'(?:天|晚|玩)\s*[:，,]?\s*([^预算住，。]{2,20}(?:[+、][^预算住，。]+)*)', prompt)
-        if attr_text:
-            parts = re.split(r'[+、/,]', attr_text.group(1))
-            for part in parts:
-                part = part.strip()
-                if part and len(part) >= 2 and not re.match(r'^(预算|住|酒店|\d)', part):
-                    attractions.append(part)
+        segments = [segment.strip() for segment in re.split(r'[，；。]', prompt) if segment.strip()]
+        for segment in segments:
+            if re.search(r'(?:预算|住|酒店|宾馆|民宿)', segment, flags=re.IGNORECASE):
+                continue
+            if re.search(r'^(?:去|到|飞|前往|想去|准备去).*(?:玩|旅游|旅行|逛)?\s*$', segment) and re.search(rf'{chinese_number_pattern}\s*(?:天|日|晚)', segment):
+                continue
+
+            candidate = None
+            if re.search(r'[+、/]', segment):
+                candidate = segment
+            elif re.search(r'(?:景点|attractions?)\s*[:：]', segment, flags=re.IGNORECASE):
+                candidate = segment
+
+            if not candidate:
+                continue
+
+            candidate_parts = split_attraction_parts(candidate)
+            if candidate_parts:
+                attractions.extend(candidate_parts)
 
     # Remove duplicates while preserving order
     seen = set()

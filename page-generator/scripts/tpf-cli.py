@@ -17,6 +17,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 # Find framework root (where this script is located)
@@ -170,16 +171,6 @@ def cmd_deploy(args):
     if not (project_dir / ".git").exists():
         error("Not a git repository. Run: git init")
 
-    # Check for uncommitted changes BEFORE git checkout --orphan
-    result = subprocess.run(
-        ["git", "status", "--porcelain"],
-        cwd=project_dir,
-        capture_output=True,
-        text=True
-    )
-    if result.stdout.strip():
-        error("Working directory has uncommitted changes. Commit or stash them first.")
-
     # Check remote
     result = subprocess.run(
         ["git", "remote", "-v"],
@@ -198,55 +189,82 @@ def cmd_deploy(args):
     # Deploy using gh-pages branch
     info("Deploying to GitHub Pages...")
 
-    # Create temporary worktree for gh-pages
-    gh_pages_dir = project_dir / ".gh-pages-temp"
-    if gh_pages_dir.exists():
-        shutil.rmtree(gh_pages_dir)
+    gh_pages_dir = Path(tempfile.mkdtemp(prefix="tpf-gh-pages-", dir=project_dir.parent))
 
     try:
-        # Check if gh-pages branch exists
         result = subprocess.run(
-            ["git", "branch", "--list", "gh-pages"],
+            ["git", "show-ref", "--verify", "--quiet", "refs/heads/gh-pages"],
             cwd=project_dir,
             capture_output=True,
             text=True
         )
+        branch_exists = result.returncode == 0
 
-        if "gh-pages" not in result.stdout:
-            # Create orphan branch
+        if branch_exists:
             subprocess.run(
-                ["git", "checkout", "--orphan", "gh-pages"],
-                cwd=project_dir,
-                check=True
-            )
-            subprocess.run(
-                ["git", "rm", "-rf", "."],
+                ["git", "worktree", "add", "--force", str(gh_pages_dir), "gh-pages"],
                 cwd=project_dir,
                 check=True
             )
         else:
             subprocess.run(
-                ["git", "checkout", "gh-pages"],
+                ["git", "worktree", "add", "--detach", str(gh_pages_dir)],
                 cwd=project_dir,
                 check=True
             )
+            subprocess.run(
+                ["git", "checkout", "--orphan", "gh-pages"],
+                cwd=gh_pages_dir,
+                check=True
+            )
+            for item in gh_pages_dir.iterdir():
+                if item.name == ".git":
+                    continue
+                if item.is_dir():
+                    shutil.rmtree(item)
+                else:
+                    item.unlink()
+            subprocess.run(
+                ["git", "rm", "-rf", "--ignore-unmatch", "."],
+                cwd=gh_pages_dir,
+                check=True
+            )
 
-        # Copy dist contents to root
+        for item in gh_pages_dir.iterdir():
+            if item.name == ".git":
+                continue
+            if item.is_dir():
+                shutil.rmtree(item)
+            else:
+                item.unlink()
+
         for item in dist_dir.iterdir():
-            if item.is_file():
-                shutil.copy(item, project_dir / item.name)
+            destination = gh_pages_dir / item.name
+            if item.is_dir():
+                shutil.copytree(item, destination)
+            else:
+                shutil.copy2(item, destination)
 
-        # Commit and push
-        subprocess.run(["git", "add", "."], cwd=project_dir, check=True)
-        subprocess.run(
-            ["git", "commit", "-m", "Deploy to GitHub Pages"],
-            cwd=project_dir,
-            check=True,
-            capture_output=True
+        subprocess.run(["git", "add", "--all"], cwd=gh_pages_dir, check=True)
+
+        status_result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=gh_pages_dir,
+            capture_output=True,
+            text=True,
+            check=True
         )
+        if status_result.stdout.strip():
+            subprocess.run(
+                ["git", "commit", "-m", "Deploy to GitHub Pages"],
+                cwd=gh_pages_dir,
+                check=True,
+                capture_output=True
+            )
+
         subprocess.run(
             ["git", "push", "origin", "gh-pages"],
-            cwd=project_dir,
+            cwd=gh_pages_dir,
             check=True
         )
 
@@ -272,12 +290,13 @@ def cmd_deploy(args):
         success(f"Deployed to: {pages_url}")
 
     finally:
-        # Switch back to main branch
         subprocess.run(
-            ["git", "checkout", "-"],
+            ["git", "worktree", "remove", "--force", str(gh_pages_dir)],
             cwd=project_dir,
             capture_output=True
         )
+        if gh_pages_dir.exists():
+            shutil.rmtree(gh_pages_dir, ignore_errors=True)
 
 
 def main():
