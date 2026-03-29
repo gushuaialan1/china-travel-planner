@@ -266,19 +266,16 @@ def get_flyai_attraction_info(name, flyai_data=None):
     return None
 
 
-def get_primary_flyai_hotel(flyai_data=None):
-    """Return the first FlyAI hotel result when available."""
+def get_flyai_hotels(flyai_data=None, min_count=3):
+    """Return top FlyAI hotel results (at least min_count when available)."""
     if not isinstance(flyai_data, dict):
-        return None
+        return []
 
     hotels = flyai_data.get("hotels")
-    if not isinstance(hotels, list) or not hotels:
-        return None
+    if not isinstance(hotels, list):
+        return []
 
-    first_hotel = hotels[0]
-    if isinstance(first_hotel, dict):
-        return first_hotel
-    return None
+    return [h for h in hotels[:max(min_count, 3)] if isinstance(h, dict)]
 
 
 def generate_trip_data(parsed, options, travel_info=None, flyai_data=None):
@@ -334,56 +331,89 @@ def generate_trip_data(parsed, options, travel_info=None, flyai_data=None):
             })
     
     hotels_input = parsed.get("hotels") or []
-    if hotels_input:
-        hotels_data = []
-        flyai_hotel = get_primary_flyai_hotel(flyai_data=flyai_data)
-        flyai_hotel_image = str((flyai_hotel or {}).get("mainPic") or "").strip()
-        flyai_hotel_booking_url = str((flyai_hotel or {}).get("bookingUrl") or "").strip()
-        for hotel in hotels_input:
-            if isinstance(hotel, dict):
-                hotels_data.append({
-                    "phase": hotel.get("phase", "全程"),
-                    "name": hotel.get("name", parsed.get("hotel_area") or f"{city}推荐酒店"),
-                    "dateRange": hotel.get("dateRange", date_range),
-                    "station": hotel.get("station", "市中心"),
-                    "status": hotel.get("status", "推荐"),
-                    "price": hotel.get("price", "待定"),
-                    "distanceToMetro": hotel.get("distanceToMetro", "地铁方便"),
-                    "image": flyai_hotel_image or hotel.get("image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"),
-                    "bookingUrl": flyai_hotel_booking_url,
-                    "highlights": hotel.get("highlights", ["位置便利", "交通方便"])
-                })
-            else:
-                hotels_data.append({
-                    "phase": "全程",
-                    "name": str(hotel),
-                    "dateRange": date_range,
-                    "station": "市中心",
-                    "status": "推荐",
-                    "price": "待定",
-                    "distanceToMetro": "地铁方便",
-                    "image": flyai_hotel_image or "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
-                    "bookingUrl": flyai_hotel_booking_url,
-                    "highlights": ["位置便利", "交通方便"]
-                })
-    else:
-        flyai_hotel = get_primary_flyai_hotel(flyai_data=flyai_data)
-        flyai_hotel_image = str((flyai_hotel or {}).get("mainPic") or "").strip()
-        flyai_hotel_booking_url = str((flyai_hotel or {}).get("bookingUrl") or "").strip()
-        hotels_data = [
-            {
+    flyai_hotels = get_flyai_hotels(flyai_data=flyai_data, min_count=3)
+
+    hotels_data = []
+    # 1. Add user-specified hotels first (marked as "已选")
+    for hotel in hotels_input:
+        if isinstance(hotel, dict):
+            # Try to find matching flyai hotel for image/bookingUrl
+            flyai_match = None
+            hotel_name = hotel.get("name", "")
+            for fh in flyai_hotels:
+                if hotel_name and (hotel_name in fh.get("name", "") or fh.get("name", "") in hotel_name):
+                    flyai_match = fh
+                    break
+            flyai_image = str((flyai_match or flyai_hotels[0] if flyai_hotels else {}).get("mainPic") or "").strip()
+            flyai_url = str((flyai_match or {}).get("bookingUrl") or "").strip()
+
+            hotels_data.append({
+                "phase": hotel.get("phase", "全程"),
+                "name": hotel.get("name", parsed.get("hotel_area") or f"{city}推荐酒店"),
+                "dateRange": hotel.get("dateRange", date_range),
+                "station": hotel.get("station", "市中心"),
+                "status": "已选",
+                "price": hotel.get("price", "待定"),
+                "distanceToMetro": hotel.get("distanceToMetro", "地铁方便"),
+                "image": flyai_image or hotel.get("image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"),
+                "bookingUrl": flyai_url,
+                "highlights": hotel.get("highlights", ["位置便利", "交通方便"])
+            })
+        else:
+            hotels_data.append({
                 "phase": "全程",
-                "name": parsed.get("hotel_area") or f"{city}推荐酒店",
+                "name": str(hotel),
                 "dateRange": date_range,
                 "station": "市中心",
-                "status": "推荐",
+                "status": "已选",
                 "price": "待定",
                 "distanceToMetro": "地铁方便",
-                "image": flyai_hotel_image or "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
-                "bookingUrl": flyai_hotel_booking_url,
+                "image": str((flyai_hotels[0] if flyai_hotels else {}).get("mainPic") or "").strip() or "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                "bookingUrl": "",
                 "highlights": ["位置便利", "交通方便"]
-            }
-        ]
+            })
+
+    # 2. Append FlyAI recommended hotels to reach at least 3 total
+    existing_names = {h["name"] for h in hotels_data}
+    for fh in flyai_hotels:
+        if len(hotels_data) >= 3:
+            break
+        fh_name = fh.get("name", "")
+        if fh_name in existing_names:
+            continue
+        hotels_data.append({
+            "phase": "全程",
+            "name": fh_name,
+            "dateRange": date_range,
+            "station": fh.get("interestsPoi", "").replace("近", "") or parsed.get("hotel_area", "市中心"),
+            "status": "推荐",
+            "price": fh.get("price", "待定"),
+            "distanceToMetro": fh.get("interestsPoi", "地铁方便"),
+            "image": str(fh.get("mainPic") or "").strip() or "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+            "bookingUrl": str(fh.get("bookingUrl") or "").strip(),
+            "highlights": [
+                f"评分 {fh['score']}" if fh.get("score") else "好评酒店",
+                fh.get("star", "舒适型"),
+                fh.get("interestsPoi", "位置便利"),
+                f"地址：{fh.get('address', '')[:20]}" if fh.get("address") else "交通方便"
+            ]
+        })
+        existing_names.add(fh_name)
+
+    # 3. If still < 3 and no flyai data, pad with generic
+    while len(hotels_data) < 3:
+        hotels_data.append({
+            "phase": "全程",
+            "name": f"{city}推荐酒店" if len(hotels_data) == 0 else f"{city}推荐酒店{len(hotels_data) + 1}",
+            "dateRange": date_range,
+            "station": parsed.get("hotel_area", "市中心"),
+            "status": "推荐",
+            "price": "待定",
+            "distanceToMetro": "地铁方便",
+            "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+            "bookingUrl": "",
+            "highlights": ["位置便利", "交通方便"]
+        })
 
     primary_hotel_name = hotels_data[0]["name"] if hotels_data else None
 

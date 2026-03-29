@@ -35,7 +35,7 @@ def test_generate_minimal():
     assert trip_data["meta"]["title"] == "长沙 2天1晚旅行计划"
     assert trip_data["hero"]["heroImage"] == ""
     assert len(trip_data["days"]) == 2
-    assert len(trip_data["hotels"]) == 1
+    assert len(trip_data["hotels"]) >= 3  # minimum 3 hotel recommendations
     assert len(trip_data["attractions"]) == 1
     assert trip_data["days"][0]["hotel"] == "长沙推荐酒店"
     assert trip_data["days"][0]["attractions"] == []

@@ -64,13 +64,14 @@ def search_hotels(city, hotel_area=None, check_in=None, check_out=None, max_pric
     """Search hotels near a point of interest."""
     args = ["search-hotels", "--dest-name", city]
     if hotel_area:
-        args += ["--poi-name", hotel_area]
+        args += ["--key-words", hotel_area]
     if check_in:
         args += ["--check-in-date", check_in]
     if check_out:
         args += ["--check-out-date", check_out]
     if max_price:
         args += ["--max-price", str(max_price)]
+    args += ["--sort", "rate_desc"]
 
     info(f"Searching hotels: {city} near {hotel_area or 'city center'}")
     data = run_flyai(args)
