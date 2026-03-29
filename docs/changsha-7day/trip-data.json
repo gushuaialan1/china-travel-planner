@@ -1,38 +1,39 @@
 {
   "meta": {
     "title": "长沙 7天6晚旅行计划",
-    "subtitle": "2026/04/01 - 2026/04/07｜探索长沙",
+    "subtitle": "2026/03/31 - 2026/04/06｜长沙·湘潭·株洲·岳阳",
     "description": "长沙 7天行程规划，包含主要景点和交通安排。"
   },
   "hero": {
     "title": "长沙 7天6晚旅行计划",
-    "subtitle": "探索长沙的精彩旅程",
-    "dateRange": "2026/04/01 - 2026/04/07",
+    "subtitle": "探索长沙·湘潭·株洲·岳阳的精彩旅程",
+    "dateRange": "2026/03/31 - 2026/04/06",
     "tags": [
       "长沙",
       "7天6晚",
-      "岳麓山",
-      "橘子洲"
+      "岳阳楼",
+      "韶山",
+      "地铁全覆盖"
     ],
-    "summary": "这是一份长沙 7天的旅行计划，涵盖主要景点和实用建议。",
+    "summary": "3月31日南京出发，4月6日返回。涵盖长沙市区、岳阳楼、韶山、株洲，覆盖长沙全部地铁线路。",
     "heroImage": ""
   },
   "stats": [
     {
       "label": "出发",
-      "value": "出发地 → 长沙"
+      "value": "南京南站 → 长沙南站"
     },
     {
       "label": "返程",
-      "value": "Day 7 下午"
+      "value": "4月6日下午 高铁返宁"
     },
     {
       "label": "时长",
-      "value": "7 天"
+      "value": "7 天 6 晚"
     },
     {
       "label": "酒店",
-      "value": "五一广场"
+      "value": "神农大酒店（黄土岭站）"
     },
     {
       "label": "预算",
@@ -42,19 +43,18 @@
   "hotels": [
     {
       "phase": "全程",
-      "name": "五一广场精选酒店",
-      "dateRange": "2026/04/01 - 2026/04/07",
-      "station": "五一广场",
+      "name": "神农大酒店",
+      "dateRange": "2026/03/31 - 2026/04/06",
+      "station": "黄土岭",
       "status": "推荐",
-      "price": "约300元/晚",
-      "distanceToMetro": "地铁方便",
-      "image": "https://img.alicdn.com/imgextra/i4/6000000005753/O1CN01ieqy4y1sMvgUvOvSk_!!6000000005753-0-hotel.jpg",
-      "bookingUrl": "https://a.feizhu.com/49sJhb",
+      "price": "已预订",
+      "distanceToMetro": "黄土岭站步行3分钟",
+      "image": "https://img.alicdn.com/imgextra/i4/6000000000393/O1CN01xattac1Em2mbN2f7x_!!6000000000393-2-hotel.png",
+      "bookingUrl": "https://a.feizhu.com/1kBIHo",
       "highlights": [
-        "地铁1/2号线换乘站",
-        "步行至太平街5分钟",
-        "周边美食密集",
-        "交通枢纽"
+        "地铁1号线黄土岭站",
+        "靠近侯家塘商圈",
+        "出行方便"
       ]
     }
   ],
@@ -91,65 +91,18 @@
   "days": [
     {
       "day": "Day 1",
-      "date": "04/01",
-      "theme": "长沙探索日",
+      "date": "03/31",
+      "theme": "抵达长沙",
       "city": "长沙",
-      "hotel": "五一广场精选酒店",
+      "hotel": "神农大酒店",
       "attractions": [
-        {
-          "name": "岳麓山",
-          "city": "长沙",
-          "type": "景点",
-          "image": "https://img.alicdn.com/tfscom/TB1Vp9XijnD8KJjSspbSuvbEXXa",
-          "bookingUrl": "https://a.feizhu.com/2HGdx3",
-          "description": "国家5A级景区，免费开放需预约。开放时间6:00-22:00。山上有岳麓书院（门票40元）、爱晚亭、云麓宫等景点，建议半天游览。地铁4号线湖南大学站可达。秋季红叶最美。",
-          "bestFor": [
-            "观光",
-            "拍照"
-          ]
-        },
         {
           "name": "橘子洲",
           "city": "长沙",
           "type": "景点",
           "image": "https://img.alicdn.com/tfscom/TB1SCipKYY1gK0jSZTESutDQVXa",
-          "bookingUrl": "https://a.feizhu.com/1ZHq6i",
-          "description": "湘江中的沙洲，免费开放需预约。毛泽东青年雕塑是标志性景点。景区较长建议乘观光车（40元环洲）。地铁2号线橘子洲站直达。每逢重大节日有烟花表演。",
-          "bestFor": [
-            "观光",
-            "拍照"
-          ]
-        }
-      ],
-      "metroLines": [],
-      "segments": {
-        "morning": [
-          "抵达长沙，入住酒店",
-          "游览岳麓山"
-        ],
-        "afternoon": [
-          "游览橘子洲"
-        ],
-        "evening": [
-          "晚餐及自由活动"
-        ]
-      },
-      "note": "根据实际行程调整"
-    },
-    {
-      "day": "Day 2",
-      "date": "04/02",
-      "theme": "长沙探索日",
-      "city": "长沙",
-      "hotel": "五一广场精选酒店",
-      "attractions": [
-        {
-          "name": "天心阁",
-          "city": "长沙",
-          "type": "景点",
-          "image": "https://img.alicdn.com/tfscom/TB1dcmiXgy17eJjSZFMSutIEVXa",
-          "bookingUrl": "https://a.feizhu.com/2pYYpk",
-          "description": "长沙古城标志，始建于明代。门票30元，公园免费。开放时间8:00-18:30。登阁可俯瞰城市全景。城墙保存完好，适合拍照。地铁1号线黄兴广场站步行可达。",
+          "bookingUrl": "https://a.feizhu.com/4Nhh73",
+          "description": "湘江沙洲，免费需预约。毛泽东青年雕塑为标志。观光车40元环洲。地铁2号线橘子洲站直达。重大节日有烟花。",
           "bestFor": [
             "观光",
             "拍照"
@@ -160,8 +113,8 @@
           "city": "长沙",
           "type": "景点",
           "image": "https://img.alicdn.com/imgextra/i1/6000000006719/O1CN01K8HxkT1zVLlPunixL_!!6000000006719-0-fliggyimage.jpg",
-          "bookingUrl": "https://a.feizhu.com/37qtzA",
-          "description": "长沙保存最完整的古街，全天免费开放。全长375米，有贾谊故居、老字号店铺和各种小吃。建议傍晚去，夜景氛围好。靠近五一广场，步行可达。",
+          "bookingUrl": "https://a.feizhu.com/0uXuQ7",
+          "description": "长沙最完整古街，全天免费。375米长，有贾谊故居和各种小吃。建议傍晚去，夜景好。靠近五一广场步行可达。",
           "bestFor": [
             "观光",
             "拍照"
@@ -171,31 +124,32 @@
       "metroLines": [],
       "segments": {
         "morning": [
-          "游览天心阁"
+          "南京南站出发，高铁前往长沙南站"
         ],
         "afternoon": [
-          "游览太平街"
+          "入住神农大酒店（黄土岭站）",
+          "地铁2号线前往橘子洲"
         ],
         "evening": [
-          "晚餐及自由活动"
+          "逛太平街，品尝长沙小吃"
         ]
       },
-      "note": "根据实际行程调整"
+      "note": "地铁1号线（黄土岭→五一广场）+ 2号线（五一广场→橘子洲）"
     },
     {
-      "day": "Day 3",
-      "date": "04/03",
-      "theme": "长沙探索日",
+      "day": "Day 2",
+      "date": "04/01",
+      "theme": "岳麓山+湖大",
       "city": "长沙",
-      "hotel": "五一广场精选酒店",
+      "hotel": "神农大酒店",
       "attractions": [
         {
-          "name": "湖南省博物馆",
+          "name": "岳麓山",
           "city": "长沙",
           "type": "景点",
-          "image": "https://img.alicdn.com/imgextra/i2/6000000003655/O1CN01eCaE931cs2ReqCwIZ_!!6000000003655-0-fliggyimage.jpg",
-          "bookingUrl": "https://a.feizhu.com/37tjxe",
-          "description": "国家一级博物馆，免费开放需提前7天预约。开放时间9:00-17:00，周一闭馆。镇馆之宝是马王堆汉墓出土文物。地铁6号线湘雅路口站步行可达。建议预留2-3小时。",
+          "image": "https://img.alicdn.com/tfscom/TB1Vp9XijnD8KJjSspbSuvbEXXa",
+          "bookingUrl": "https://a.feizhu.com/3Bi4Sv",
+          "description": "国家5A级景区，免费开放需预约。开放6:00-22:00。岳麓书院门票40元，爱晚亭免费。建议半天。地铁4号线湖南大学站。",
           "bestFor": [
             "观光",
             "拍照"
@@ -206,8 +160,8 @@
           "city": "长沙",
           "type": "景点",
           "image": "http://store.is.autonavi.com/showpic/e13848b6e140a798c7c6354b393d02d5",
-          "bookingUrl": "https://a.feizhu.com/1NXLtF",
-          "description": "毛泽东青年时期求学之地，全天免费开放。建筑中西合璧，校园环境清幽。适合对红色历史感兴趣的游客。地铁1号线南门口站步行可达。游览约1小时。",
+          "bookingUrl": "https://a.feizhu.com/3KhtzJ",
+          "description": "毛泽东青年求学之地，全天免费开放。中西合璧建筑，校园清幽。地铁1号线南门口站步行可达。游览约1小时。",
           "bestFor": [
             "观光",
             "拍照"
@@ -217,31 +171,198 @@
       "metroLines": [],
       "segments": {
         "morning": [
-          "游览湖南省博物馆"
+          "地铁4号线前往岳麓山",
+          "游览岳麓书院、爱晚亭"
         ],
         "afternoon": [
-          "游览湖南第一师范"
+          "下山后游览湖南大学校园",
+          "前往湖南第一师范"
         ],
         "evening": [
-          "晚餐及自由活动"
+          "杜甫江阁看湘江夜景"
         ]
       },
-      "note": "根据实际行程调整"
+      "note": "地铁4号线（黄土岭→湖南大学站）"
+    },
+    {
+      "day": "Day 3",
+      "date": "04/02",
+      "theme": "文博之旅",
+      "city": "长沙",
+      "hotel": "神农大酒店",
+      "attractions": [
+        {
+          "name": "湖南省博物馆",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://img.alicdn.com/imgextra/i2/6000000003655/O1CN01eCaE931cs2ReqCwIZ_!!6000000003655-0-fliggyimage.jpg",
+          "bookingUrl": "https://a.feizhu.com/07RFtP",
+          "description": "国家一级博物馆，免费需提前7天预约。9:00-17:00，周一闭馆。马王堆汉墓出土文物为镇馆之宝。建议2-3小时。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        },
+        {
+          "name": "天心阁",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://img.alicdn.com/tfscom/TB1dcmiXgy17eJjSZFMSutIEVXa",
+          "bookingUrl": "https://a.feizhu.com/4LSbeh",
+          "description": "长沙古城标志，明代始建。门票32元，公园免费。开放8:00-17:00。登阁俯瞰全城。地铁1号线黄兴广场站步行可达。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        },
+        {
+          "name": "火宫殿",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://img.alicdn.com/imgextra/i3/6000000002024/O1CN01e39m8t1Qp2Ec5kfsE_!!6000000002024-0-fliggyimage.jpg",
+          "bookingUrl": "https://a.feizhu.com/4g5L4f",
+          "description": "百年老字号，国家级非遗。集火庙文化与饮食于一体。免费进入，小吃王国7:00-24:00。臭豆腐糖油粑粑是招牌。坡子街127号。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        }
+      ],
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "地铁6号线前往湖南省博物馆",
+          "参观马王堆汉墓文物（预留3小时）"
+        ],
+        "afternoon": [
+          "地铁1号线前往天心阁登阁观城"
+        ],
+        "evening": [
+          "火宫殿吃小吃，逛坡子街"
+        ]
+      },
+      "note": "地铁6号线（覆盖新线路）"
     },
     {
       "day": "Day 4",
-      "date": "04/04",
-      "theme": "长沙探索日",
-      "city": "长沙",
-      "hotel": "五一广场精选酒店",
+      "date": "04/03",
+      "theme": "岳阳一日游",
+      "city": "岳阳",
+      "hotel": "神农大酒店",
       "attractions": [
+        {
+          "name": "岳阳楼",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+          "bookingUrl": "",
+          "description": "江南三大名楼之一，始建于东汉。门票70元，8:00-18:00。登楼可览洞庭湖全景。长沙高铁30分钟到岳阳东站。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        },
+        {
+          "name": "洞庭湖",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://store.is.autonavi.com/showpic/6d6250e6d4140f9b93ceb38d9d730c21",
+          "bookingUrl": "https://a.feizhu.com/4UL6Ko",
+          "description": "中国第二大淡水湖。岳阳楼景区内可观湖，君山岛在湖中。建议与岳阳楼同日游览。免费观湖，君山岛门票78元。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        }
+      ],
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早起乘高铁长沙南→岳阳东（约30分钟）",
+          "游览岳阳楼，登楼览洞庭"
+        ],
+        "afternoon": [
+          "洞庭湖畔漫步，可选君山岛（船票另购）"
+        ],
+        "evening": [
+          "高铁返回长沙，晚餐自由活动"
+        ]
+      },
+      "note": "高铁往返约1小时，建议7:30出发"
+    },
+    {
+      "day": "Day 5",
+      "date": "04/04",
+      "theme": "韶山/湘潭一日游",
+      "city": "湘潭",
+      "hotel": "神农大酒店",
+      "attractions": [
+        {
+          "name": "韶山毛泽东故居",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+          "bookingUrl": "",
+          "description": "全国重点文物保护单位，免费需预约。毛泽东故居、铜像广场、纪念馆等景点。建议一整天。长沙汽车西站有直达班车。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        }
+      ],
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "地铁3号线→长株潭城际→湘潭",
+          "前往韶山毛泽东故居"
+        ],
+        "afternoon": [
+          "参观铜像广场、纪念馆、滴水洞"
+        ],
+        "evening": [
+          "返回长沙，地铁5号线体验新线路"
+        ]
+      },
+      "note": "地铁3号线 + 5号线（覆盖新线路）"
+    },
+    {
+      "day": "Day 6",
+      "date": "04/05",
+      "theme": "株洲+购物",
+      "city": "株洲/长沙",
+      "hotel": "神农大酒店",
+      "attractions": [
+        {
+          "name": "株洲方特欢乐世界",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+          "bookingUrl": "",
+          "description": "大型主题乐园，门票约280元。9:30-17:30。有高科技主题项目和游乐设施。长株潭城际铁路约30分钟可达。适合整天游玩。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        },
+        {
+          "name": "IFS国金中心",
+          "city": "长沙",
+          "type": "景点",
+          "image": "https://img.alicdn.com/imgextra/i2/6000000007252/O1CN01253zuA23RSxzTYxes_!!6000000007252-0-fliggyimage.jpg",
+          "bookingUrl": "https://a.feizhu.com/0JjJkl",
+          "description": "长沙新地标，7楼雕塑花园有KAWS可免费打卡。商场10:00-22:00。地铁2号线五一广场站。适合购物和观景。",
+          "bestFor": [
+            "观光",
+            "拍照"
+          ]
+        },
         {
           "name": "黄兴南路步行街",
           "city": "长沙",
           "type": "景点",
           "image": "https://img.alicdn.com/imgextra/i1/659290/TB2RW2vhpXXXXahXXXXXXXXXXXX_!!659290-0-travel.jpg",
-          "bookingUrl": "https://a.feizhu.com/3amROE",
-          "description": "长沙最繁华商业街，全天免费开放。全长838米，汇集购物、美食、娱乐。旁边就是坡子街小吃聚集地。地铁1号线黄兴广场站直达。建议晚上逛，夜景好。",
+          "bookingUrl": "https://a.feizhu.com/2tXt5x",
+          "description": "长沙最繁华商业街，全天免费。838米长，汇集购物美食。旁边是坡子街小吃聚集地。地铁1号线黄兴广场站。",
           "bestFor": [
             "观光",
             "拍照"
@@ -251,31 +372,32 @@
       "metroLines": [],
       "segments": {
         "morning": [
-          "前往黄兴南路步行街"
+          "城际铁路前往株洲方特欢乐世界"
         ],
         "afternoon": [
-          "深度游览黄兴南路步行街"
+          "方特游玩后返回长沙",
+          "IFS国金中心打卡KAWS"
         ],
         "evening": [
-          "晚餐及自由活动"
+          "黄兴南路步行街购物，最后一晚夜游长沙"
         ]
       },
-      "note": "根据实际行程调整"
+      "note": "株洲方特需要大半天，建议早去下午返"
     },
     {
-      "day": "Day 5",
-      "date": "04/05",
-      "theme": "长沙探索日",
+      "day": "Day 7",
+      "date": "04/06",
+      "theme": "返程日",
       "city": "长沙",
-      "hotel": "五一广场精选酒店",
+      "hotel": null,
       "attractions": [
         {
           "name": "杜甫江阁",
           "city": "长沙",
           "type": "景点",
           "image": "https://img.alicdn.com/imgextra/i1/6000000007068/O1CN01gRd2CV225BzQCGt3j_!!6000000007068-0-fliggyimage.jpg",
-          "bookingUrl": "https://a.feizhu.com/20Lx4n",
-          "description": "纪念诗圣杜甫的仿唐建筑，湖南最大木质结构古建。门票18元，开放9:00-22:00。登阁可赏湘江夜景和橘子洲。亮灯时间18:00-22:00，夜景绝美。地铁2号线湘江中路站。",
+          "bookingUrl": "https://a.feizhu.com/1e3OKa",
+          "description": "纪念杜甫的仿唐建筑，湖南最大木质古建。门票18元，9:00-22:00。亮灯18:00-22:00，夜景绝美。地铁2号线湘江中路站。",
           "bestFor": [
             "观光",
             "拍照"
@@ -285,104 +407,36 @@
       "metroLines": [],
       "segments": {
         "morning": [
-          "前往杜甫江阁"
+          "退房，轻装前往杜甫江阁（如昨晚未去）"
         ],
         "afternoon": [
-          "深度游览杜甫江阁"
-        ],
-        "evening": [
-          "晚餐及自由活动"
-        ]
-      },
-      "note": "根据实际行程调整"
-    },
-    {
-      "day": "Day 6",
-      "date": "04/06",
-      "theme": "长沙探索日",
-      "city": "长沙",
-      "hotel": "五一广场精选酒店",
-      "attractions": [
-        {
-          "name": "火宫殿",
-          "city": "长沙",
-          "type": "景点",
-          "image": "https://img.alicdn.com/imgextra/i3/6000000002024/O1CN01e39m8t1Qp2Ec5kfsE_!!6000000002024-0-fliggyimage.jpg",
-          "bookingUrl": "https://a.feizhu.com/3TTFJn",
-          "description": "百年老字号，国家级非遗。集火庙文化和饮食文化于一体。免费进入，小吃王国营业7:00-24:00。臭豆腐、糖油粑粑是招牌。节假日有庙会和花鼓戏表演。坡子街127号。",
-          "bestFor": [
-            "观光",
-            "拍照"
-          ]
-        }
-      ],
-      "metroLines": [],
-      "segments": {
-        "morning": [
-          "前往火宫殿"
-        ],
-        "afternoon": [
-          "深度游览火宫殿"
-        ],
-        "evening": [
-          "晚餐及自由活动"
-        ]
-      },
-      "note": "根据实际行程调整"
-    },
-    {
-      "day": "Day 7",
-      "date": "04/07",
-      "theme": "返程日",
-      "city": "长沙",
-      "hotel": null,
-      "attractions": [
-        {
-          "name": "IFS国金中心",
-          "city": "长沙",
-          "type": "景点",
-          "image": "https://img.alicdn.com/imgextra/i2/6000000007252/O1CN01253zuA23RSxzTYxes_!!6000000007252-0-fliggyimage.jpg",
-          "bookingUrl": "https://a.feizhu.com/2RYx1c",
-          "description": "长沙地标，主塔452米共94层。商场10:00-22:00营业。7楼雕塑花园有KAWS地标可免费打卡。93层有观景餐厅和空中酒吧，俯瞰全城夜景极佳。地铁2号线五一广场站。",
-          "bestFor": [
-            "观光",
-            "拍照"
-          ]
-        }
-      ],
-      "metroLines": [],
-      "segments": {
-        "morning": [
-          "退房，前往IFS国金中心"
-        ],
-        "afternoon": [
-          "返程"
+          "长沙南站乘高铁返回南京"
         ],
         "evening": []
       },
-      "note": "根据实际行程调整"
+      "note": "下午高铁返回，上午可补打卡"
     }
   ],
   "sideTrips": [
     {
-      "name": "湘潭",
+      "name": "湘潭/韶山",
       "date": "1天",
       "role": "周边侧游",
-      "description": "毛泽东故居韶山；湘潭老城",
+      "description": "长株潭城际/地铁直达；毛泽东故居；韶山景区",
       "image": ""
     },
     {
       "name": "株洲",
       "date": "半天",
       "role": "周边侧游",
-      "description": "株洲方特欢乐世界",
+      "description": "长沙地铁3号线 → 长株潭城际直达；株洲方特欢乐世界",
       "image": ""
     },
     {
       "name": "岳阳",
       "date": "1天",
       "role": "周边侧游",
-      "description": "岳阳楼；洞庭湖；君山岛",
+      "description": "长沙南站 → 岳阳东站高铁约30分钟；岳阳楼；洞庭湖；君山岛",
       "image": ""
     }
   ],
@@ -392,8 +446,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/tfscom/TB1Vp9XijnD8KJjSspbSuvbEXXa",
-      "bookingUrl": "https://a.feizhu.com/2HGdx3",
-      "description": "国家5A级景区，免费开放需预约。开放时间6:00-22:00。山上有岳麓书院（门票40元）、爱晚亭、云麓宫等景点，建议半天游览。地铁4号线湖南大学站可达。秋季红叶最美。",
+      "bookingUrl": "https://a.feizhu.com/3Bi4Sv",
+      "description": "国家5A级景区，免费开放需预约。开放6:00-22:00。岳麓书院门票40元，爱晚亭免费。建议半天。地铁4号线湖南大学站。",
       "bestFor": [
         "观光",
         "拍照"
@@ -404,8 +458,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/tfscom/TB1SCipKYY1gK0jSZTESutDQVXa",
-      "bookingUrl": "https://a.feizhu.com/1ZHq6i",
-      "description": "湘江中的沙洲，免费开放需预约。毛泽东青年雕塑是标志性景点。景区较长建议乘观光车（40元环洲）。地铁2号线橘子洲站直达。每逢重大节日有烟花表演。",
+      "bookingUrl": "https://a.feizhu.com/4Nhh73",
+      "description": "湘江沙洲，免费需预约。毛泽东青年雕塑为标志。观光车40元环洲。地铁2号线橘子洲站直达。重大节日有烟花。",
       "bestFor": [
         "观光",
         "拍照"
@@ -416,8 +470,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/tfscom/TB1dcmiXgy17eJjSZFMSutIEVXa",
-      "bookingUrl": "https://a.feizhu.com/2pYYpk",
-      "description": "长沙古城标志，始建于明代。门票30元，公园免费。开放时间8:00-18:30。登阁可俯瞰城市全景。城墙保存完好，适合拍照。地铁1号线黄兴广场站步行可达。",
+      "bookingUrl": "https://a.feizhu.com/4LSbeh",
+      "description": "长沙古城标志，明代始建。门票32元，公园免费。开放8:00-17:00。登阁俯瞰全城。地铁1号线黄兴广场站步行可达。",
       "bestFor": [
         "观光",
         "拍照"
@@ -428,8 +482,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/imgextra/i1/6000000006719/O1CN01K8HxkT1zVLlPunixL_!!6000000006719-0-fliggyimage.jpg",
-      "bookingUrl": "https://a.feizhu.com/37qtzA",
-      "description": "长沙保存最完整的古街，全天免费开放。全长375米，有贾谊故居、老字号店铺和各种小吃。建议傍晚去，夜景氛围好。靠近五一广场，步行可达。",
+      "bookingUrl": "https://a.feizhu.com/0uXuQ7",
+      "description": "长沙最完整古街，全天免费。375米长，有贾谊故居和各种小吃。建议傍晚去，夜景好。靠近五一广场步行可达。",
       "bestFor": [
         "观光",
         "拍照"
@@ -440,8 +494,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/imgextra/i2/6000000003655/O1CN01eCaE931cs2ReqCwIZ_!!6000000003655-0-fliggyimage.jpg",
-      "bookingUrl": "https://a.feizhu.com/37tjxe",
-      "description": "国家一级博物馆，免费开放需提前7天预约。开放时间9:00-17:00，周一闭馆。镇馆之宝是马王堆汉墓出土文物。地铁6号线湘雅路口站步行可达。建议预留2-3小时。",
+      "bookingUrl": "https://a.feizhu.com/07RFtP",
+      "description": "国家一级博物馆，免费需提前7天预约。9:00-17:00，周一闭馆。马王堆汉墓出土文物为镇馆之宝。建议2-3小时。",
       "bestFor": [
         "观光",
         "拍照"
@@ -452,8 +506,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "http://store.is.autonavi.com/showpic/e13848b6e140a798c7c6354b393d02d5",
-      "bookingUrl": "https://a.feizhu.com/1NXLtF",
-      "description": "毛泽东青年时期求学之地，全天免费开放。建筑中西合璧，校园环境清幽。适合对红色历史感兴趣的游客。地铁1号线南门口站步行可达。游览约1小时。",
+      "bookingUrl": "https://a.feizhu.com/3KhtzJ",
+      "description": "毛泽东青年求学之地，全天免费开放。中西合璧建筑，校园清幽。地铁1号线南门口站步行可达。游览约1小时。",
       "bestFor": [
         "观光",
         "拍照"
@@ -464,8 +518,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/imgextra/i1/659290/TB2RW2vhpXXXXahXXXXXXXXXXXX_!!659290-0-travel.jpg",
-      "bookingUrl": "https://a.feizhu.com/3amROE",
-      "description": "长沙最繁华商业街，全天免费开放。全长838米，汇集购物、美食、娱乐。旁边就是坡子街小吃聚集地。地铁1号线黄兴广场站直达。建议晚上逛，夜景好。",
+      "bookingUrl": "https://a.feizhu.com/2tXt5x",
+      "description": "长沙最繁华商业街，全天免费。838米长，汇集购物美食。旁边是坡子街小吃聚集地。地铁1号线黄兴广场站。",
       "bestFor": [
         "观光",
         "拍照"
@@ -476,8 +530,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/imgextra/i1/6000000007068/O1CN01gRd2CV225BzQCGt3j_!!6000000007068-0-fliggyimage.jpg",
-      "bookingUrl": "https://a.feizhu.com/20Lx4n",
-      "description": "纪念诗圣杜甫的仿唐建筑，湖南最大木质结构古建。门票18元，开放9:00-22:00。登阁可赏湘江夜景和橘子洲。亮灯时间18:00-22:00，夜景绝美。地铁2号线湘江中路站。",
+      "bookingUrl": "https://a.feizhu.com/1e3OKa",
+      "description": "纪念杜甫的仿唐建筑，湖南最大木质古建。门票18元，9:00-22:00。亮灯18:00-22:00，夜景绝美。地铁2号线湘江中路站。",
       "bestFor": [
         "观光",
         "拍照"
@@ -488,8 +542,8 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/imgextra/i3/6000000002024/O1CN01e39m8t1Qp2Ec5kfsE_!!6000000002024-0-fliggyimage.jpg",
-      "bookingUrl": "https://a.feizhu.com/3TTFJn",
-      "description": "百年老字号，国家级非遗。集火庙文化和饮食文化于一体。免费进入，小吃王国营业7:00-24:00。臭豆腐、糖油粑粑是招牌。节假日有庙会和花鼓戏表演。坡子街127号。",
+      "bookingUrl": "https://a.feizhu.com/4g5L4f",
+      "description": "百年老字号，国家级非遗。集火庙文化与饮食于一体。免费进入，小吃王国7:00-24:00。臭豆腐糖油粑粑是招牌。坡子街127号。",
       "bestFor": [
         "观光",
         "拍照"
@@ -500,8 +554,56 @@
       "city": "长沙",
       "type": "景点",
       "image": "https://img.alicdn.com/imgextra/i2/6000000007252/O1CN01253zuA23RSxzTYxes_!!6000000007252-0-fliggyimage.jpg",
-      "bookingUrl": "https://a.feizhu.com/2RYx1c",
-      "description": "长沙地标，主塔452米共94层。商场10:00-22:00营业。7楼雕塑花园有KAWS地标可免费打卡。93层有观景餐厅和空中酒吧，俯瞰全城夜景极佳。地铁2号线五一广场站。",
+      "bookingUrl": "https://a.feizhu.com/0JjJkl",
+      "description": "长沙新地标，7楼雕塑花园有KAWS可免费打卡。商场10:00-22:00。地铁2号线五一广场站。适合购物和观景。",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "岳阳楼",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+      "bookingUrl": "",
+      "description": "江南三大名楼之一，始建于东汉。门票70元，8:00-18:00。登楼可览洞庭湖全景。长沙高铁30分钟到岳阳东站。",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "洞庭湖",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://store.is.autonavi.com/showpic/6d6250e6d4140f9b93ceb38d9d730c21",
+      "bookingUrl": "https://a.feizhu.com/4UL6Ko",
+      "description": "中国第二大淡水湖。岳阳楼景区内可观湖，君山岛在湖中。建议与岳阳楼同日游览。免费观湖，君山岛门票78元。",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "株洲方特欢乐世界",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+      "bookingUrl": "",
+      "description": "大型主题乐园，门票约280元。9:30-17:30。有高科技主题项目和游乐设施。长株潭城际铁路约30分钟可达。适合整天游玩。",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "韶山毛泽东故居",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+      "bookingUrl": "",
+      "description": "全国重点文物保护单位，免费需预约。毛泽东故居、铜像广场、纪念馆等景点。建议一整天。长沙汽车西站有直达班车。",
       "bestFor": [
         "观光",
         "拍照"
@@ -509,8 +611,11 @@
     }
   ],
   "tips": [
-    "提前预订长沙酒店，节假日价格会上涨。",
-    "关注天气预报，准备合适的衣物。",
-    "下载当地地铁APP，方便查询线路。"
+    "长沙南站到神农大酒店：地铁2号线转1号线到黄土岭站，约40分钟。",
+    "岳阳一日游建议买长沙南→岳阳东往返高铁票，约30分钟/趟。",
+    "韶山毛泽东故居免费但需提前预约，节假日人多建议早去。",
+    "株洲方特欢乐世界门票约280元，建议提前网上购票优惠。",
+    "湖南省博物馆需提前7天在公众号预约，周一闭馆。",
+    "长沙地铁全线覆盖行程已安排：1号线(Day1)、2号线(Day1)、3号线(Day5)、4号线(Day2)、5号线(Day5)、6号线(Day3)。"
   ]
 }
