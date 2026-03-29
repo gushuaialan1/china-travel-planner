@@ -1,3 +1,6 @@
 *.pyc
 __pycache__/
-trip-data.json
+dist/
+output/
+*.egg-info/
+.env

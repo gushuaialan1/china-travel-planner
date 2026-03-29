@@ -1,64 +1,77 @@
 # china-travel-planner
 
-An [OpenClaw](https://github.com/nicobailon/openclaw) skill for planning domestic China trips — combining real-time search, metro-aware routing, and itinerary page generation.
+An [OpenClaw](https://github.com/openclaw/openclaw) skill for AI agents to plan domestic China trips and generate shareable itinerary web pages.
 
-## What it does
+## Architecture
 
-Given a travel request like "清明去长沙玩三天", this skill produces a practical itinerary with transport options, hotel area recommendations, attraction picks, and a day-by-day schedule. It can also generate a standalone HTML page for the trip plan.
+The AI agent is the brain — it understands user intent, picks destinations, plans daily itineraries, and produces structured data. The `tpf` toolchain is the hands — it validates data, builds HTML pages, and deploys them.
 
-## Key features
+```
+User request → AI Agent plans itinerary → Structured JSON
+  → tpf-generate (scaffold) → tpf validate → tpf build → HTML page
+  → tpf deploy → GitHub Pages
+```
 
-- **Real-time search via flyai/Fliggy** — flights, hotels, POIs, and tickets with live pricing and availability
-- **Metro-aware planning** — subway line data, station coverage analysis, hotel-to-station matching, and line-coverage optimization
-- **Page generation pipeline** — converts a trip plan into structured JSON, then renders it as a self-contained HTML itinerary page (Tailwind CSS, no build step)
-- **Wikimedia Commons image search** — finds Creative Commons images for destinations and attractions
+## Quick Start
 
-## Project structure
+```bash
+# One-click pipeline
+python3 scripts/tpf-pipeline.py \
+  --from-json examples/changsha-3day/input.json \
+  --output-dir output \
+  --with-metro --pretty
+
+# Or step by step
+python3 scripts/search_travel_info.py --city 长沙 --attractions 岳麓山 橘子洲 --pretty
+python3 page-generator/scripts/tpf-generate.py --from-json input.json --pretty -o data/trip-data.json
+python3 page-generator/scripts/tpf-cli.py validate
+python3 page-generator/scripts/tpf-cli.py build
+```
+
+## Project Structure
 
 ```
 china-travel-planner/
-├── SKILL.md                    # Skill definition and planning workflow
-├── references/                 # Prompt references and planning guides
-│   ├── domestic-planning-prompts.md
-│   ├── subway-aware-planning.md
-│   └── structured-output-mode.md
-├── scripts/                    # Metro data utilities
-│   ├── fetch_subway_data.py    # Download subway network data
-│   ├── metro_hotel_match.py    # Match hotels to nearby stations
-│   └── coverage_plan_notes.py  # Metro line coverage planning
-└── page-generator/             # Trip page generation pipeline
-    ├── schema/                 # JSON schema for trip data
-    ├── scripts/                # CLI tools (generate, init, image search)
-    ├── templates/              # HTML template + JS renderer
-    └── examples/               # Example outputs
-        └── changsha-2026-03-31/  # Changsha 3-day trip example
+├── SKILL.md                          # Agent skill definition (start here)
+├── scripts/
+│   ├── tpf-pipeline.py               # One-click pipeline
+│   ├── search_travel_info.py         # Tavily-powered travel guide search
+│   ├── fetch_subway_data.py          # Metro line/station data (AMap)
+│   ├── metro_hotel_match.py          # Hotel-to-metro matching
+│   └── coverage_plan_notes.py        # Metro coverage planning
+├── page-generator/
+│   ├── scripts/
+│   │   ├── tpf-cli.py               # validate / build / deploy
+│   │   ├── tpf-generate.py          # JSON input → trip-data.json
+│   │   └── wikimedia_image_search.py # Free image search
+│   ├── schema/
+│   │   ├── trip-schema.json          # JSON schema
+│   │   └── trip-content-guidelines.md
+│   └── templates/
+│       ├── trip-page-tailwind.html   # HTML template
+│       └── trip-renderer.js          # Client-side renderer
+├── examples/
+│   └── changsha-3day/                # End-to-end example
+├── references/                       # Planning guides
+└── docs/                             # GitHub Pages deployment
 ```
 
-## Installation
+## Tools
 
-Install as an OpenClaw skill:
+| Script | Purpose |
+|--------|---------|
+| `tpf-pipeline.py` | Full pipeline: search → generate → validate → build |
+| `search_travel_info.py` | Search travel guides via Tavily API |
+| `tpf-generate.py` | Convert structured JSON to schema-compliant trip-data.json |
+| `tpf-cli.py validate` | Validate trip-data.json against schema |
+| `tpf-cli.py build` | Build static HTML page |
+| `tpf-cli.py deploy` | Deploy to GitHub Pages via git worktree |
+| `fetch_subway_data.py` | Fetch metro data from AMap |
+| `wikimedia_image_search.py` | Search CC-licensed images from Wikimedia |
 
-```bash
-# From ClawHub
-clawhub install china-travel-planner
+## Example
 
-# Or clone manually
-git clone https://github.com/gushuaialan1/china-travel-planner.git \
-  ~/.openclaw/workspace/skills/china-travel-planner
-```
-
-The skill also depends on the [flyai skill](https://github.com/nicobailon/openclaw) for real-time search. Make sure it's installed too.
-
-## How it works
-
-1. **Clarify** — the agent extracts trip parameters (dates, destination, budget, constraints) from your request
-2. **Search** — queries flyai/Fliggy for flights, hotels, and POIs; fetches metro data if needed
-3. **Plan** — assembles a day-by-day itinerary with transport, meals, and timing
-4. **Generate** (optional) — exports the plan as JSON following `page-generator/schema/trip-schema.json`, then renders it into a standalone HTML page
-
-## Example output
-
-See [`page-generator/examples/changsha-2026-03-31/`](page-generator/examples/changsha-2026-03-31/) for a complete Changsha 3-day trip — includes the source JSON data and the generated HTML itinerary page.
+See [`examples/changsha-3day/`](examples/changsha-3day/) for a complete end-to-end example.
 
 ## License
 
