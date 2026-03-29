@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 """
-tpf-generate.py - AI-powered trip generation for travel-page-framework.
+tpf-generate.py - Generate trip-data.json from structured JSON input.
 
 Usage:
-    tpf generate "杭州3天2晚，西湖+灵隐寺，住湖滨，预算2000"
-    tpf generate --from-file prompt.txt --output trip-data.json
-    tpf generate "长沙7天地铁全覆盖+湘潭株洲岳阳" --with-metro --with-images
+    tpf-generate.py --from-json input.json --output trip-data.json
+    cat input.json | tpf-generate.py --from-stdin --pretty
 
 Features:
-    - Natural language to structured JSON
+    - Accept structured JSON from files or stdin
     - Auto-fetch metro data for supported cities
     - Auto-search Wikimedia images for attractions
 """
 
 import argparse
 import json
-import os
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -37,230 +34,45 @@ def info(msg):
 def success(msg):
     print(f"[tpf-generate] ✅ {msg}")
 
-def parse_number_token(token):
-    """Parse Arabic digits, Chinese numerals, and common English number words."""
-    if not token:
-        return None
+def load_input_json(args):
+    """Load structured trip input from a file or stdin."""
+    if args.from_json:
+        try:
+            with open(args.from_json, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            error(f"Input JSON file not found: {args.from_json}")
+        except json.JSONDecodeError as exc:
+            error(f"Invalid JSON in {args.from_json}: {exc}")
 
-    token = token.strip().lower()
-    if token.isdigit():
-        return int(token)
+    if args.from_stdin:
+        raw = sys.stdin.read().strip()
+        if not raw:
+            error("No JSON content received from stdin")
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError as exc:
+            error(f"Invalid JSON from stdin: {exc}")
 
-    english_numbers = {
-        "zero": 0,
-        "one": 1,
-        "two": 2,
-        "three": 3,
-        "four": 4,
-        "five": 5,
-        "six": 6,
-        "seven": 7,
-        "eight": 8,
-        "nine": 9,
-        "ten": 10,
-        "eleven": 11,
-        "twelve": 12,
-        "thirteen": 13,
-        "fourteen": 14,
-        "fifteen": 15,
-        "sixteen": 16,
-        "seventeen": 17,
-        "eighteen": 18,
-        "nineteen": 19,
-        "twenty": 20,
-    }
-    if token in english_numbers:
-        return english_numbers[token]
+    error("One of --from-json or --from-stdin is required")
 
-    chinese_digits = {
-        "零": 0,
-        "〇": 0,
-        "一": 1,
-        "二": 2,
-        "两": 2,
-        "三": 3,
-        "四": 4,
-        "五": 5,
-        "六": 6,
-        "七": 7,
-        "八": 8,
-        "九": 9,
-    }
+def validate_input_data(data):
+    """Validate minimum required structured input."""
+    if not isinstance(data, dict):
+        error("Input JSON must be an object")
 
-    if token in chinese_digits:
-        return chinese_digits[token]
+    if not data.get("city"):
+        error("Input JSON is missing required field: city")
 
-    if all(char in "零〇一二两三四五六七八九十百" for char in token):
-        total = 0
-        current = 0
-        for char in token:
-            if char in chinese_digits:
-                current = chinese_digits[char]
-            elif char == "十":
-                total += (current or 1) * 10
-                current = 0
-            elif char == "百":
-                total += (current or 1) * 100
-                current = 0
-        return total + current
+    days = data.get("days")
+    if days is None:
+        error("Input JSON is missing required field: days")
+    if not isinstance(days, int) or days <= 0:
+        error("Field 'days' must be a positive integer")
 
-    return None
-
-def parse_prompt(prompt):
-    """Extract key info from natural language prompt."""
-    info(f"Parsing: {prompt}")
-    
-    result = {
-        "city": None,
-        "days": None,
-        "nights": None,
-        "attractions": [],
-        "hotel_area": None,
-        "budget": None,
-        "side_trips": []
-    }
-
-    chinese_number_pattern = r'(\d+|[零〇一二两三四五六七八九十百]+)'
-    chinese_number_token_pattern = r'(?:\d+|[零〇一二两三四五六七八九十百]+)'
-    english_number_pattern = r'(\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)'
-    english_number_token_pattern = r'(?:\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)'
-
-    city_patterns = [
-        rf'(?:去|到|飞|前往|想去|准备去)\s*([\u4e00-\u9fa5]{{2,12}}?)(?=\s*(?:玩|旅游|旅行|逛|待|住|{chinese_number_token_pattern}\s*(?:天|日|晚)|[，,。！？\s]|$))',
-        rf'^([\u4e00-\u9fa5]{{2,12}}?)(?=\s*{chinese_number_token_pattern}\s*(?:天|日|晚))',
-        rf'(?:go\s+to|visit|travel\s+to|trip\s+to)\s+([A-Za-z][A-Za-z\s-]{{1,40}}?)(?=\s+(?:for\s+)?{english_number_token_pattern}\s+(?:days?|nights?)\b|\s*[,.]|$)',
-        rf'\bin\s+([A-Za-z][A-Za-z\s-]{{1,40}}?)(?=\s+(?:for\s+)?{english_number_token_pattern}\s+(?:days?|nights?)\b|\s*[,.]|$)',
-        rf'^([A-Za-z][A-Za-z\s-]{{1,40}}?)(?=\s+(?:for\s+)?{english_number_token_pattern}\s+days?\b)',
-    ]
-    for pattern in city_patterns:
-        city_match = re.search(pattern, prompt, flags=re.IGNORECASE)
-        if city_match:
-            result["city"] = city_match.group(1).strip(" ,，。")
-            break
-
-    # Extract days/nights
-    days_match = re.search(rf'{chinese_number_pattern}\s*(?:天|日)', prompt)
-    if days_match:
-        result["days"] = parse_number_token(days_match.group(1))
-    else:
-        days_match = re.search(rf'{english_number_pattern}\s+days?\b', prompt, flags=re.IGNORECASE)
-        if days_match:
-            result["days"] = parse_number_token(days_match.group(1))
-
-    nights_match = re.search(rf'{chinese_number_pattern}\s*晚', prompt)
-    if nights_match:
-        result["nights"] = parse_number_token(nights_match.group(1))
-    else:
-        nights_match = re.search(rf'{english_number_pattern}\s+nights?\b', prompt, flags=re.IGNORECASE)
-        if nights_match:
-            result["nights"] = parse_number_token(nights_match.group(1))
-
-    # Extract budget
-    budget_patterns = [
-        r'预算\s*(?:约|大概|大约|在)?\s*[¥￥]?\s*(\d+)',
-        r'(?:budget|under|around)\s*(?:is\s*)?(?:cny|rmb|usd|\$|¥)?\s*(\d+)',
-        r'[¥￥$]\s*(\d+)'
-    ]
-    for pattern in budget_patterns:
-        budget_match = re.search(pattern, prompt, flags=re.IGNORECASE)
-        if budget_match:
-            result["budget"] = int(budget_match.group(1))
-            break
-
-    def looks_like_attraction(part):
-        part = part.strip(" ,，。；;:：")
-        if len(part) < 2:
-            return False
-        if re.search(r'\b(?:days?|nights?|budget|hotel|metro)\b', part, flags=re.IGNORECASE):
-            return False
-        if re.search(r'(?:预算|^住|酒店|宾馆|民宿|地铁|\d+天|\d+晚|\d+日|小时|交通|机票|高铁)', part):
-            return False
-        if re.fullmatch(
-            rf'(?:去|到|飞|前往|想去|准备去)?[\u4e00-\u9fa5]{{2,12}}(?:玩|旅游|旅行|逛){chinese_number_token_pattern}(?:天|日|晚)',
-            part
-        ):
-            return False
-        return True
-
-    def split_attraction_parts(text):
-        text = re.sub(r'^(?:景点|attractions?)\s*[:：]\s*', '', text, flags=re.IGNORECASE)
-        raw_parts = re.split(r'\s*(?:\+|、|/|，\s*(?=[\u4e00-\u9fa5A-Za-z])|,\s*(?=[A-Za-z]))\s*', text)
-        parts = []
-        for raw_part in raw_parts:
-            part = raw_part.strip(" ,，。；;:：")
-            if looks_like_attraction(part):
-                parts.append(part)
-        return parts
-
-    # Extract attractions
-    attractions = []
-
-    explicit_patterns = [
-        r'(?:景点|attractions?)\s*[:：]\s*([^。；;]+)',
-    ]
-    for pattern in explicit_patterns:
-        attr_match = re.search(pattern, prompt, flags=re.IGNORECASE)
-        if attr_match:
-            attractions.extend(split_attraction_parts(attr_match.group(1)))
-            if attractions:
-                break
-
-    if not attractions:
-        segments = [segment.strip() for segment in re.split(r'[，；。]', prompt) if segment.strip()]
-        for segment in segments:
-            if re.search(r'(?:预算|住|酒店|宾馆|民宿)', segment, flags=re.IGNORECASE):
-                continue
-            if re.search(r'^(?:去|到|飞|前往|想去|准备去).*(?:玩|旅游|旅行|逛)?\s*$', segment) and re.search(rf'{chinese_number_pattern}\s*(?:天|日|晚)', segment):
-                continue
-
-            candidate = None
-            if re.search(r'[+、/]', segment):
-                candidate = segment
-            elif re.search(r'(?:景点|attractions?)\s*[:：]', segment, flags=re.IGNORECASE):
-                candidate = segment
-
-            if not candidate:
-                continue
-
-            candidate_parts = split_attraction_parts(candidate)
-            if candidate_parts:
-                attractions.extend(candidate_parts)
-
-    # Remove duplicates while preserving order
-    seen = set()
-    result["attractions"] = [a for a in attractions if not (a in seen or seen.add(a))]
-
-    # Extract hotel area - enhanced patterns
-    hotel_patterns = [
-        r'住\s*在?\s*([^，。,]+?)(?:附近|旁边|周边|，|。|$)',
-        r'住\s*([^，。,]{2,15}?)(?:酒店|宾馆|民宿)?(?:，|。|$)',
-        r'酒店.*?在\s*([^，。,]+)',
-        r'(?:住|酒店).*?([^，。]{2,10})(?:附近|片区|区域)',
-    ]
-    for pattern in hotel_patterns:
-        hotel_match = re.search(pattern, prompt)
-        if hotel_match:
-            hotel_area = hotel_match.group(1).strip(" ,，。附近旁边")
-            if hotel_area and len(hotel_area) >= 2:
-                result["hotel_area"] = hotel_area
-                break
-
-    # Extract side trips - enhanced patterns
-    side_patterns = [
-        r'(?:加上?|以及|和|连带|顺路|连同)\s*([^，。]{2,8})(?:方向|顺路|一起|一日游)?',
-        r'周边[城市]?[:：]?\s*([^，。]+)',
-        r'(?: cover|visit)\s+[^+]+[+\/]([^，。,]+)',
-    ]
-    for pattern in side_patterns:
-        side_match = re.search(pattern, prompt)
-        if side_match:
-            cities = re.split(r'[、/+，,]', side_match.group(1))
-            side_trips = [c.strip() for c in cities if len(c.strip()) >= 2]
-            if side_trips:
-                result["side_trips"] = side_trips
-                break
-    
-    return result
+    nights = data.get("nights")
+    if nights is not None and (not isinstance(nights, int) or nights < 0):
+        error("Field 'nights' must be a non-negative integer")
 
 def fetch_metro_data(city):
     """Fetch metro data if city is supported."""
@@ -379,6 +191,60 @@ def generate_trip_data(parsed, options):
                 "status": "planned"
             })
     
+    hotels_input = parsed.get("hotels") or []
+    if hotels_input:
+        hotels_data = []
+        for hotel in hotels_input:
+            if isinstance(hotel, dict):
+                hotels_data.append({
+                    "phase": hotel.get("phase", "全程"),
+                    "name": hotel.get("name", parsed.get("hotel_area") or f"{city}推荐酒店"),
+                    "dateRange": hotel.get("dateRange", date_range),
+                    "station": hotel.get("station", "市中心"),
+                    "status": hotel.get("status", "推荐"),
+                    "price": hotel.get("price", "待定"),
+                    "distanceToMetro": hotel.get("distanceToMetro", "地铁方便"),
+                    "image": hotel.get("image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"),
+                    "highlights": hotel.get("highlights", ["位置便利", "交通方便"])
+                })
+            else:
+                hotels_data.append({
+                    "phase": "全程",
+                    "name": str(hotel),
+                    "dateRange": date_range,
+                    "station": "市中心",
+                    "status": "推荐",
+                    "price": "待定",
+                    "distanceToMetro": "地铁方便",
+                    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                    "highlights": ["位置便利", "交通方便"]
+                })
+    else:
+        hotels_data = [
+            {
+                "phase": "全程",
+                "name": parsed.get("hotel_area") or f"{city}推荐酒店",
+                "dateRange": date_range,
+                "station": "市中心",
+                "status": "推荐",
+                "price": "待定",
+                "distanceToMetro": "地铁方便",
+                "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                "highlights": ["位置便利", "交通方便"]
+            }
+        ]
+
+    side_trips_data = []
+    for side_trip in parsed.get("side_trips", []):
+        if isinstance(side_trip, dict):
+            side_trips_data.append(side_trip)
+        else:
+            side_trips_data.append({
+                "destination": str(side_trip),
+                "duration": "1天",
+                "highlights": ["可作为周边顺路行程"]
+            })
+
     # Build final structure
     trip_data = {
         "meta": {
@@ -401,25 +267,13 @@ def generate_trip_data(parsed, options):
             {"label": "酒店", "value": parsed.get("hotel_area") or "待定"},
             {"label": "预算", "value": f"约 ¥{parsed.get('budget', '?')}/人" if parsed.get('budget') else "待定"}
         ],
-        "hotels": [
-            {
-                "phase": "全程",
-                "name": parsed.get("hotel_area") or f"{city}推荐酒店",
-                "dateRange": date_range,
-                "station": "市中心",
-                "status": "推荐",
-                "price": "待定",
-                "distanceToMetro": "地铁方便",
-                "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
-                "highlights": ["位置便利", "交通方便"]
-            }
-        ],
+        "hotels": hotels_data,
         "metroCoverage": {
             "goal": "覆盖主要地铁线路，方便出行",
             "lines": metro_lines if metro_lines else []
         },
         "days": days_data,
-        "sideTrips": [],
+        "sideTrips": side_trips_data,
         "attractions": attractions_data if attractions_data else [
             {
                 "name": f"{city}主要景点",
@@ -442,30 +296,21 @@ def generate_trip_data(parsed, options):
 def main():
     parser = argparse.ArgumentParser(
         prog="tpf-generate",
-        description="Generate trip data from natural language"
+        description="Generate trip data from structured JSON"
     )
-    parser.add_argument("prompt", nargs="?", help="Natural language description of the trip")
-    parser.add_argument("--from-file", "-f", help="Read prompt from file")
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group.add_argument("--from-json", help="Read structured input JSON from file")
+    input_group.add_argument("--from-stdin", action="store_true", help="Read structured input JSON from stdin")
     parser.add_argument("--output", "-o", default="trip-data.json", help="Output file")
     parser.add_argument("--with-metro", action="store_true", help="Auto-fetch metro data")
     parser.add_argument("--with-images", action="store_true", help="Auto-search images")
     parser.add_argument("--pretty", action="store_true", help="Pretty print JSON")
     
     args = parser.parse_args()
-    
-    # Get prompt
-    if args.from_file:
-        with open(args.from_file, "r", encoding="utf-8") as f:
-            prompt = f.read().strip()
-    elif args.prompt:
-        prompt = args.prompt
-    else:
-        parser.print_help()
-        sys.exit(1)
-    
-    # Parse and generate
-    parsed = parse_prompt(prompt)
-    info(f"Parsed: {json.dumps(parsed, ensure_ascii=False)}")
+
+    parsed = load_input_json(args)
+    validate_input_data(parsed)
+    info(f"Loaded input: {json.dumps(parsed, ensure_ascii=False)}")
     
     options = {
         "with_metro": args.with_metro,

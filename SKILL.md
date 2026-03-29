@@ -256,34 +256,57 @@ Keep structured card text concise and web-friendly.
 If the user explicitly wants a web page, page framework, reusable travel card layout, or future rendering, read `references/structured-output-mode.md` and organize the plan so the text layer and structured layer remain consistent.
 ## Page generation pipeline
 
-Use this when the user wants a **shareable web page**, standalone HTML itinerary, or asks for a "travel page" / "行程页面". The pipeline turns a travel plan into a static HTML page powered by the `travel-page-framework`.
+Use this when the user wants a **shareable web page**, standalone HTML itinerary, or asks for a "travel page" / "行程页面". This skill is designed for AI agents: the AI is responsible for understanding the user's request, making assumptions, and planning the itinerary. The `tpf` toolchain is only responsible for structured data validation, page building, and deployment.
 
 ### Flow
 
 ```
-plan (chat) → structured trip-data.json → tpf-generate → tpf validate → tpf build → dist/index.html
+plan (AI agent) → structured input JSON → tpf-generate → structured trip-data.json → tpf validate → tpf build → dist/index.html
 ```
 
 ### Step-by-step
 
 1. **Plan the trip** using the normal planning workflow above.
-2. **Generate structured JSON** from a natural-language prompt:
+2. **Generate `trip-data.json`** from structured JSON prepared by the AI agent:
 
 ```bash
 python3 skills/china-travel-planner/page-generator/scripts/tpf-generate.py \
-  "杭州3天2晚，西湖+灵隐寺，住湖滨，预算2000" \
+  --from-json input.json \
   --with-metro --with-images --pretty \
+  -o data/trip-data.json
+```
+
+Minimum input example:
+
+```json
+{
+  "city": "长沙",
+  "days": 7,
+  "nights": 6,
+  "attractions": ["岳麓山", "橘子洲", "天心阁"],
+  "hotel_area": "五一广场",
+  "budget": 3000
+}
+```
+
+For agent pipelines, stdin is also supported:
+
+```bash
+cat input.json | python3 skills/china-travel-planner/page-generator/scripts/tpf-generate.py \
+  --from-stdin \
+  --pretty \
   -o data/trip-data.json
 ```
 
 Options:
 - `--with-metro`: auto-fetch metro/subway data for the city
 - `--with-images`: auto-search Wikimedia Commons for attraction images
-- `--from-file prompt.txt`: read prompt from a file instead of CLI arg
+- `--from-json input.json`: read structured input JSON from file
+- `--from-stdin`: read structured input JSON from stdin
 - `--output` / `-o`: output path (default: `trip-data.json`)
 - `--pretty`: pretty-print the JSON
 
-3. **Review and refine** the generated `trip-data.json`. The auto-generated skeleton is a starting point — fill in richer descriptions, swap placeholder images, and adjust day-by-day segments as needed. Follow the content guidelines in `page-generator/schema/trip-content-guidelines.md`.
+3. **Review and refine** the generated `trip-data.json`. `tpf-generate` only fills a schema-compatible skeleton from the structured fields it receives. The agent should refine descriptions, day segments, side trips, hotel details, and images as needed. Follow the content guidelines in `page-generator/schema/trip-content-guidelines.md`.
 
 4. **Validate** the data against the schema:
 
@@ -318,10 +341,10 @@ python3 skills/china-travel-planner/page-generator/scripts/tpf-cli.py deploy --t
 
 ### When to use tpf-generate vs manual JSON
 
-- **tpf-generate**: quick scaffolding from a one-liner prompt. Good for getting the structure right fast.
-- **Manual JSON**: when you already have a detailed plan from the chat workflow and want precise control over every field.
+- **tpf-generate**: quick scaffolding from structured fields the AI agent has already assembled. Good for getting schema-compliant output fast.
+- **Manual JSON**: when the agent already has a fully detailed itinerary and wants precise control over every field.
 
-In practice, generate the skeleton first, then hand-edit or have the agent refine it.
+In practice, the agent prepares the structured input, generates the skeleton, then refines `trip-data.json` before validation/build.
 
 ## When information is missing
 
