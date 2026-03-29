@@ -15,7 +15,7 @@
       "橘子洲"
     ],
     "summary": "这是一份长沙 7天的旅行计划，涵盖主要景点和实用建议。",
-    "heroImage": ""
+    "heroImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/City_God_Temple_of_Hongshan_20250506C.jpg/1280px-City_God_Temple_of_Hongshan_20250506C.jpg"
   },
   "stats": [
     {
@@ -99,8 +99,8 @@
           "name": "岳麓山",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "岳麓山索道票价：上行30元，下行25元，往返50元。开放时间：上午9:00-17:00。购票需提前预约。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/%E5%B2%B3%E9%BA%93%E5%B1%B1%E4%BF%AF%E7%9C%8B%E9%95%BF%E6%B2%99%E5%9F%8E_-_panoramio.jpg/1280px-%E5%B2%B3%E9%BA%93%E5%B1%B1%E4%BF%AF%E7%9C%8B%E9%95%BF%E6%B2%99%E5%9F%8E_-_panoramio.jpg",
+          "description": "国家5A级景区，免费开放需预约。开放时间6:00-22:00。山上有岳麓书院（门票40元）、爱晚亭、云麓宫等景点，建议半天游览。地铁4号线湖南大学站可达。秋季红叶最美。",
           "bestFor": [
             "观光",
             "拍照"
@@ -110,8 +110,8 @@
           "name": "橘子洲",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "长沙橘子洲一日游攻略：门票与费用 景区门票：橘子洲景区门票免费。 沙滩公园门票：50元/人。 观光车费用： 环全洲线：40元/人。 游船码头专线/沙滩公园专线：20元/人。 停车费用：小型车辆5元/次，大型车辆10元/次。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/%E9%95%BF%E6%B2%99%E6%A9%98%E5%AD%90%E6%B4%B2.jpg/1280px-%E9%95%BF%E6%B2%99%E6%A9%98%E5%AD%90%E6%B4%B2.jpg",
+          "description": "湘江中的沙洲，免费开放需预约。毛泽东青年雕塑是标志性景点。景区较长建议乘观光车（40元环洲）。地铁2号线橘子洲站直达。每逢重大节日有烟花表演。",
           "bestFor": [
             "观光",
             "拍照"
@@ -144,8 +144,8 @@
           "name": "天心阁",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "[]( []( []( [](\n\n赏花发票抽奖赏银杏春节全攻略赏红叶攻略五一旅游攻略教师节国庆旅游攻略考研除夕活动指南赏梅花个人养老金观日出攻略亲子游展会露营房贷利率婴幼儿照护电动车上牌中考一分一段表端午节养老金领取清明节云招聘免费景点人口。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/%E9%95%BF%E6%B2%99%E5%A4%A9%E5%BF%83%E9%98%81.jpg/1280px-%E9%95%BF%E6%B2%99%E5%A4%A9%E5%BF%83%E9%98%81.jpg",
+          "description": "长沙古城标志，始建于明代。门票30元，公园免费。开放时间8:00-18:30。登阁可俯瞰城市全景。城墙保存完好，适合拍照。地铁1号线黄兴广场站步行可达。",
           "bestFor": [
             "观光",
             "拍照"
@@ -155,8 +155,8 @@
           "name": "太平街",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "【导语】：长沙太平老街全天免费开放，想要去逛吃逛吃的朋友可以直接出发啦！她长沙城区中部，具体游玩攻略见正文。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%E9%95%BF%E6%B2%99%E5%A4%AA%E5%B9%B3%E8%A1%97%E7%BE%8E%E9%A3%9F%E5%9F%8E.jpg/1280px-%E9%95%BF%E6%B2%99%E5%A4%AA%E5%B9%B3%E8%A1%97%E7%BE%8E%E9%A3%9F%E5%9F%8E.jpg",
+          "description": "长沙保存最完整的古街，全天免费开放。全长375米，有贾谊故居、老字号店铺和各种小吃。建议傍晚去，夜景氛围好。靠近五一广场，步行可达。",
           "bestFor": [
             "观光",
             "拍照"
@@ -188,8 +188,8 @@
           "name": "湖南省博物馆",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "# 湖南省博物馆开放时间+入馆须知（最新）\n\n导语 湖南省博物馆开放时间2025年7月1日至8月31日，每周二至周日开放时间延长至20：30（20:00停止入馆），每周一为闭馆日（逢法定节假日顺延）。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Far_view_of_Changsha_Museum%2C_picture2.jpg/1280px-Far_view_of_Changsha_Museum%2C_picture2.jpg",
+          "description": "国家一级博物馆，免费开放需提前7天预约。开放时间9:00-17:00，周一闭馆。镇馆之宝是马王堆汉墓出土文物。地铁6号线湘雅路口站步行可达。建议预留2-3小时。",
           "bestFor": [
             "观光",
             "拍照"
@@ -199,8 +199,8 @@
           "name": "湖南第一师范",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "长沙湖南第一师范全天开放，无需门票。毛泽东与第一师范纪念馆暂停營業，具体时间未定。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Site_of_Chengnan_Academy.jpg/1280px-Site_of_Chengnan_Academy.jpg",
+          "description": "毛泽东青年时期求学之地，全天免费开放。建筑中西合璧，校园环境清幽。适合对红色历史感兴趣的游客。地铁1号线南门口站步行可达。游览约1小时。",
           "bestFor": [
             "观光",
             "拍照"
@@ -232,8 +232,8 @@
           "name": "黄兴南路步行街",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "长沙黄兴南路步行街开放全天，无门票。推荐晚上前往，琳琅满目的商店。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/9/96/Changshajianying.jpg",
+          "description": "长沙最繁华商业街，全天免费开放。全长838米，汇集购物、美食、娱乐。旁边就是坡子街小吃聚集地。地铁1号线黄兴广场站直达。建议晚上逛，夜景好。",
           "bestFor": [
             "观光",
             "拍照"
@@ -265,8 +265,8 @@
           "name": "杜甫江阁",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "他的脚步也引得广大诗迷们追随\n\n作为杜甫人生最后居住的地方“江阁”\n\n成为每位来长沙旅游的游客必打卡的景点之一\n\n作为湖南最大的仿唐木质结构建筑的杜甫江阁\n\n正随着年轻人的打卡焕发出新活力\n\n微信图片_20240719154350.jpg\n。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/%E6%9D%9C%E7%94%AB%E6%B1%9F%E9%98%81.jpg/1280px-%E6%9D%9C%E7%94%AB%E6%B1%9F%E9%98%81.jpg",
+          "description": "纪念诗圣杜甫的仿唐建筑，湖南最大木质结构古建。门票18元，开放9:00-22:00。登阁可赏湘江夜景和橘子洲。亮灯时间18:00-22:00，夜景绝美。地铁2号线湘江中路站。",
           "bestFor": [
             "观光",
             "拍照"
@@ -298,8 +298,8 @@
           "name": "火宫殿",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "凡参赛选手，组委会免费赠送1张百年老店“火宫殿”9折券！凡参赛选手在长马官网预订酒店，组委会免费赠送1张百年老店“火宫殿”9折券+1张长沙臭豆腐美食券！【到店凭券即免费赠送火宫殿臭豆腐1份】领取指南\n\n- 上一篇文章：谢子龙影像艺术馆当代摄。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/%E7%81%AB%E5%AE%AB%E6%AE%BF.jpg/1280px-%E7%81%AB%E5%AE%AB%E6%AE%BF.jpg",
+          "description": "百年老字号，国家级非遗。集火庙文化和饮食文化于一体。免费进入，小吃王国营业7:00-24:00。臭豆腐、糖油粑粑是招牌。节假日有庙会和花鼓戏表演。坡子街127号。",
           "bestFor": [
             "观光",
             "拍照"
@@ -331,8 +331,8 @@
           "name": "IFS国金中心",
           "city": "长沙",
           "type": "景点",
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-          "description": "Changsha IFS国金中心营业时间10:00-22:00，门票免费，93层观景台最佳。",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/%E8%BF%9C%E6%9C%9B%E9%95%BF%E6%B2%99IFS%E5%9B%BD%E9%87%91%E4%B8%AD%E5%BF%83.jpg/1280px-%E8%BF%9C%E6%9C%9B%E9%95%BF%E6%B2%99IFS%E5%9B%BD%E9%87%91%E4%B8%AD%E5%BF%83.jpg",
+          "description": "长沙地标，主塔452米共94层。商场10:00-22:00营业。7楼雕塑花园有KAWS地标可免费打卡。93层有观景餐厅和空中酒吧，俯瞰全城夜景极佳。地铁2号线五一广场站。",
           "bestFor": [
             "观光",
             "拍照"
@@ -358,7 +358,7 @@
       "date": "1天",
       "role": "周边侧游",
       "description": "毛泽东故居韶山；湘潭老城",
-      "image": ""
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/%E9%9F%B6%E5%B1%B1_%E9%9F%B6%E5%B1%B1%E8%A1%8C%E6%97%85%E6%B8%B8%E5%88%97%E8%BD%A6%E4%B9%8BYZ25G-31950_02.jpg/1280px-%E9%9F%B6%E5%B1%B1_%E9%9F%B6%E5%B1%B1%E8%A1%8C%E6%97%85%E6%B8%B8%E5%88%97%E8%BD%A6%E4%B9%8BYZ25G-31950_02.jpg"
     },
     {
       "name": "株洲",
@@ -380,8 +380,8 @@
       "name": "岳麓山",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "岳麓山索道票价：上行30元，下行25元，往返50元。开放时间：上午9:00-17:00。购票需提前预约。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/%E5%B2%B3%E9%BA%93%E5%B1%B1%E4%BF%AF%E7%9C%8B%E9%95%BF%E6%B2%99%E5%9F%8E_-_panoramio.jpg/1280px-%E5%B2%B3%E9%BA%93%E5%B1%B1%E4%BF%AF%E7%9C%8B%E9%95%BF%E6%B2%99%E5%9F%8E_-_panoramio.jpg",
+      "description": "国家5A级景区，免费开放需预约。开放时间6:00-22:00。山上有岳麓书院（门票40元）、爱晚亭、云麓宫等景点，建议半天游览。地铁4号线湖南大学站可达。秋季红叶最美。",
       "bestFor": [
         "观光",
         "拍照"
@@ -391,8 +391,8 @@
       "name": "橘子洲",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "长沙橘子洲一日游攻略：门票与费用 景区门票：橘子洲景区门票免费。 沙滩公园门票：50元/人。 观光车费用： 环全洲线：40元/人。 游船码头专线/沙滩公园专线：20元/人。 停车费用：小型车辆5元/次，大型车辆10元/次。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/%E9%95%BF%E6%B2%99%E6%A9%98%E5%AD%90%E6%B4%B2.jpg/1280px-%E9%95%BF%E6%B2%99%E6%A9%98%E5%AD%90%E6%B4%B2.jpg",
+      "description": "湘江中的沙洲，免费开放需预约。毛泽东青年雕塑是标志性景点。景区较长建议乘观光车（40元环洲）。地铁2号线橘子洲站直达。每逢重大节日有烟花表演。",
       "bestFor": [
         "观光",
         "拍照"
@@ -402,8 +402,8 @@
       "name": "天心阁",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "[]( []( []( [](\n\n赏花发票抽奖赏银杏春节全攻略赏红叶攻略五一旅游攻略教师节国庆旅游攻略考研除夕活动指南赏梅花个人养老金观日出攻略亲子游展会露营房贷利率婴幼儿照护电动车上牌中考一分一段表端午节养老金领取清明节云招聘免费景点人口。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/%E9%95%BF%E6%B2%99%E5%A4%A9%E5%BF%83%E9%98%81.jpg/1280px-%E9%95%BF%E6%B2%99%E5%A4%A9%E5%BF%83%E9%98%81.jpg",
+      "description": "长沙古城标志，始建于明代。门票30元，公园免费。开放时间8:00-18:30。登阁可俯瞰城市全景。城墙保存完好，适合拍照。地铁1号线黄兴广场站步行可达。",
       "bestFor": [
         "观光",
         "拍照"
@@ -413,8 +413,8 @@
       "name": "太平街",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "【导语】：长沙太平老街全天免费开放，想要去逛吃逛吃的朋友可以直接出发啦！她长沙城区中部，具体游玩攻略见正文。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%E9%95%BF%E6%B2%99%E5%A4%AA%E5%B9%B3%E8%A1%97%E7%BE%8E%E9%A3%9F%E5%9F%8E.jpg/1280px-%E9%95%BF%E6%B2%99%E5%A4%AA%E5%B9%B3%E8%A1%97%E7%BE%8E%E9%A3%9F%E5%9F%8E.jpg",
+      "description": "长沙保存最完整的古街，全天免费开放。全长375米，有贾谊故居、老字号店铺和各种小吃。建议傍晚去，夜景氛围好。靠近五一广场，步行可达。",
       "bestFor": [
         "观光",
         "拍照"
@@ -424,8 +424,8 @@
       "name": "湖南省博物馆",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "# 湖南省博物馆开放时间+入馆须知（最新）\n\n导语 湖南省博物馆开放时间2025年7月1日至8月31日，每周二至周日开放时间延长至20：30（20:00停止入馆），每周一为闭馆日（逢法定节假日顺延）。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Far_view_of_Changsha_Museum%2C_picture2.jpg/1280px-Far_view_of_Changsha_Museum%2C_picture2.jpg",
+      "description": "国家一级博物馆，免费开放需提前7天预约。开放时间9:00-17:00，周一闭馆。镇馆之宝是马王堆汉墓出土文物。地铁6号线湘雅路口站步行可达。建议预留2-3小时。",
       "bestFor": [
         "观光",
         "拍照"
@@ -435,8 +435,8 @@
       "name": "湖南第一师范",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "长沙湖南第一师范全天开放，无需门票。毛泽东与第一师范纪念馆暂停營業，具体时间未定。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Site_of_Chengnan_Academy.jpg/1280px-Site_of_Chengnan_Academy.jpg",
+      "description": "毛泽东青年时期求学之地，全天免费开放。建筑中西合璧，校园环境清幽。适合对红色历史感兴趣的游客。地铁1号线南门口站步行可达。游览约1小时。",
       "bestFor": [
         "观光",
         "拍照"
@@ -446,8 +446,8 @@
       "name": "黄兴南路步行街",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "长沙黄兴南路步行街开放全天，无门票。推荐晚上前往，琳琅满目的商店。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/9/96/Changshajianying.jpg",
+      "description": "长沙最繁华商业街，全天免费开放。全长838米，汇集购物、美食、娱乐。旁边就是坡子街小吃聚集地。地铁1号线黄兴广场站直达。建议晚上逛，夜景好。",
       "bestFor": [
         "观光",
         "拍照"
@@ -457,8 +457,8 @@
       "name": "杜甫江阁",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "他的脚步也引得广大诗迷们追随\n\n作为杜甫人生最后居住的地方“江阁”\n\n成为每位来长沙旅游的游客必打卡的景点之一\n\n作为湖南最大的仿唐木质结构建筑的杜甫江阁\n\n正随着年轻人的打卡焕发出新活力\n\n微信图片_20240719154350.jpg\n。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/%E6%9D%9C%E7%94%AB%E6%B1%9F%E9%98%81.jpg/1280px-%E6%9D%9C%E7%94%AB%E6%B1%9F%E9%98%81.jpg",
+      "description": "纪念诗圣杜甫的仿唐建筑，湖南最大木质结构古建。门票18元，开放9:00-22:00。登阁可赏湘江夜景和橘子洲。亮灯时间18:00-22:00，夜景绝美。地铁2号线湘江中路站。",
       "bestFor": [
         "观光",
         "拍照"
@@ -468,8 +468,8 @@
       "name": "火宫殿",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "凡参赛选手，组委会免费赠送1张百年老店“火宫殿”9折券！凡参赛选手在长马官网预订酒店，组委会免费赠送1张百年老店“火宫殿”9折券+1张长沙臭豆腐美食券！【到店凭券即免费赠送火宫殿臭豆腐1份】领取指南\n\n- 上一篇文章：谢子龙影像艺术馆当代摄。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/%E7%81%AB%E5%AE%AB%E6%AE%BF.jpg/1280px-%E7%81%AB%E5%AE%AB%E6%AE%BF.jpg",
+      "description": "百年老字号，国家级非遗。集火庙文化和饮食文化于一体。免费进入，小吃王国营业7:00-24:00。臭豆腐、糖油粑粑是招牌。节假日有庙会和花鼓戏表演。坡子街127号。",
       "bestFor": [
         "观光",
         "拍照"
@@ -479,8 +479,8 @@
       "name": "IFS国金中心",
       "city": "长沙",
       "type": "景点",
-      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-      "description": "Changsha IFS国金中心营业时间10:00-22:00，门票免费，93层观景台最佳。",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/%E8%BF%9C%E6%9C%9B%E9%95%BF%E6%B2%99IFS%E5%9B%BD%E9%87%91%E4%B8%AD%E5%BF%83.jpg/1280px-%E8%BF%9C%E6%9C%9B%E9%95%BF%E6%B2%99IFS%E5%9B%BD%E9%87%91%E4%B8%AD%E5%BF%83.jpg",
+      "description": "长沙地标，主塔452米共94层。商场10:00-22:00营业。7楼雕塑花园有KAWS地标可免费打卡。93层有观景餐厅和空中酒吧，俯瞰全城夜景极佳。地铁2号线五一广场站。",
       "bestFor": [
         "观光",
         "拍照"
