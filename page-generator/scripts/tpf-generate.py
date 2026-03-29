@@ -104,6 +104,7 @@ def search_images(query, limit=3):
     if not IMAGE_SCRIPT.exists():
         return None
 
+    info(f"Searching image for: {query}")
     try:
         result = subprocess.run(
             ["python3", str(IMAGE_SCRIPT), query, "--limit", str(limit)],
@@ -130,7 +131,14 @@ def normalize_side_trip(side_trip):
     if isinstance(side_trip, dict):
         required_fields = ("name", "date", "role", "description")
         if all(field in side_trip for field in required_fields):
-            return side_trip
+            normalized = dict(side_trip)
+            normalized["name"] = str(normalized.get("name", "")).strip()
+            normalized["date"] = str(normalized.get("date", "")).strip()
+            normalized["role"] = str(normalized.get("role", "")).strip()
+            normalized["description"] = str(normalized.get("description", "")).strip()
+            if "image" in normalized and normalized["image"] is not None:
+                normalized["image"] = str(normalized["image"]).strip()
+            return normalized
 
         highlights = side_trip.get("highlights", [])
         if isinstance(highlights, list):
@@ -146,14 +154,16 @@ def normalize_side_trip(side_trip):
             "role": str(side_trip.get("role") or "周边侧游").strip(),
             "description": description or str(
                 side_trip.get("description") or "可作为周边顺路行程"
-            ).strip()
+            ).strip(),
+            "image": str(side_trip.get("image") or "").strip()
         }
 
     return {
         "name": str(side_trip).strip(),
         "date": "1天",
         "role": "周边侧游",
-        "description": "可作为周边顺路行程"
+        "description": "可作为周边顺路行程",
+        "image": ""
     }
 
 def generate_trip_data(parsed, options):
@@ -265,10 +275,16 @@ def generate_trip_data(parsed, options):
             }
         ]
 
-    side_trips_data = [
-        normalize_side_trip(side_trip)
-        for side_trip in parsed.get("side_trips", [])
-    ]
+    side_trips_data = []
+    for side_trip in parsed.get("side_trips", []):
+        normalized_side_trip = normalize_side_trip(side_trip)
+        if options.get("with_images") and not normalized_side_trip.get("image"):
+            normalized_side_trip["image"] = search_images(f"{normalized_side_trip['name']} 旅游", limit=1) or ""
+        side_trips_data.append(normalized_side_trip)
+
+    hero_image = str(parsed.get("heroImage") or "").strip()
+    if options.get("with_images") and not hero_image:
+        hero_image = search_images(f"{city} 城市风景", limit=1) or ""
 
     # Build final structure
     trip_data = {
@@ -283,7 +299,7 @@ def generate_trip_data(parsed, options):
             "dateRange": date_range,
             "tags": [city, f"{days}天{nights}晚"] + parsed.get("attractions", [])[:2],
             "summary": f"这是一份{city} {days}天的旅行计划，涵盖主要景点和实用建议。",
-            "heroImage": ""
+            "heroImage": hero_image
         },
         "stats": [
             {"label": "出发", "value": f"出发地 → {city}"},
