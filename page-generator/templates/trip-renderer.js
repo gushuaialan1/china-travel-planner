@@ -204,8 +204,11 @@
       });
     });
 
-    // Side trips
-    setHTML('side-trips-list', data.sideTrips.map(function (s) {
+    // Side trips (show section only if there are side trips)
+    if (data.sideTrips && data.sideTrips.length > 0) {
+      var sideTripsSection = document.getElementById('side-trips');
+      if (sideTripsSection) sideTripsSection.classList.remove('hidden');
+      setHTML('side-trips-list', data.sideTrips.map(function (s) {
       return '<article class="overflow-hidden ' + (theme().css && theme().css.card || '') + '">' +
         '<img src="' + esc(s.image) + '" alt="' + esc(s.name) + '" class="h-48 w-full object-cover" loading="lazy" />' +
         '<div class="p-5"><div class="text-xs uppercase tracking-[0.2em] text-slate-400">' + esc(s.date) + '</div>' +
@@ -213,6 +216,7 @@
         '<div class="mt-2 text-sm text-tealsoft">' + esc(s.role) + '</div>' +
         '<p class="mt-3 text-sm leading-7 text-slate-600">' + esc(s.description) + '</p></div></article>';
     }).join(''));
+    }
 
     // Tips
     setHTML('tips-panel', data.tips.map(function (tip) {

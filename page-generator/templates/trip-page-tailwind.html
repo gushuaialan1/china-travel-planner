@@ -97,22 +97,13 @@
         <div id="day-list" class="grid gap-5 lg:grid-cols-2"></div>
       </section>
 
-      <!-- Side Trips + Tips -->
-      <section id="side-trips" class="grid gap-8 lg:grid-cols-2">
-        <div>
-          <div class="mb-6">
-            <p class="text-sm uppercase tracking-[0.2em] text-tealsoft">Side Trips</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">周边城市侧游</h2>
-          </div>
-          <div id="side-trips-list" class="grid gap-5"></div>
+      <!-- Side Trips (hidden when empty) -->
+      <section id="side-trips" class="hidden">
+        <div class="mb-6">
+          <p class="text-sm uppercase tracking-[0.2em] text-tealsoft">Side Trips</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">周边城市侧游</h2>
         </div>
-        <div>
-          <div class="mb-6">
-            <p class="text-sm uppercase tracking-[0.2em] text-tealsoft">Tips</p>
-            <h2 class="mt-2 text-2xl font-bold text-slate-900">实用提醒</h2>
-          </div>
-          <div id="tips-panel" class="space-y-4"></div>
-        </div>
+        <div id="side-trips-list" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
       </section>
 
       <!-- Attractions -->
@@ -122,6 +113,15 @@
           <h2 class="mt-2 text-2xl font-bold text-slate-900">景点灵感</h2>
         </div>
         <div id="attraction-grid" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+      </section>
+
+      <!-- Tips (bottom of page) -->
+      <section id="tips-section">
+        <div class="mb-6">
+          <p class="text-sm uppercase tracking-[0.2em] text-tealsoft">Tips</p>
+          <h2 class="mt-2 text-2xl font-bold text-slate-900">实用提醒</h2>
+        </div>
+        <div id="tips-panel" class="space-y-4"></div>
       </section>
     </main>
 
