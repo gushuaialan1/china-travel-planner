@@ -180,28 +180,6 @@ def generate_trip_data(parsed, options):
     
     date_range = f"{start_date.strftime('%Y/%m/%d')} - {(start_date + timedelta(days=days-1)).strftime('%Y/%m/%d')}"
     
-    # Build day-by-day itinerary
-    days_data = []
-    for i in range(days):
-        day_date = start_date + timedelta(days=i)
-        day_num = i + 1
-        
-        day_data = {
-            "day": f"Day {day_num}",
-            "date": day_date.strftime("%m/%d"),
-            "theme": f"{city}探索日" if i < days - 1 else "返程日",
-            "city": city,
-            "hotel": f"{city}酒店" if i < days - 1 else None,
-            "metroLines": [],
-            "segments": {
-                "morning": ["早餐后出发"],
-                "afternoon": ["游览主要景点"],
-                "evening": ["晚餐及休息"] if i < days - 1 else []
-            },
-            "note": "根据实际行程调整"
-        }
-        days_data.append(day_data)
-    
     # Build attractions with auto-images if requested
     attractions_data = []
     for attr in parsed.get("attractions", []):
@@ -274,6 +252,66 @@ def generate_trip_data(parsed, options):
                 "highlights": ["位置便利", "交通方便"]
             }
         ]
+
+    primary_hotel_name = hotels_data[0]["name"] if hotels_data else None
+
+    attraction_count = len(attractions_data)
+    base_attractions_per_day = attraction_count // days if days else 0
+    extra_attractions_days = attraction_count % days if days else 0
+
+    def build_segments_for_day(day_index, day_attractions):
+        if day_index == days - 1:
+            return {
+                "morning": ["退房整理行李"],
+                "afternoon": ["返程"],
+                "evening": []
+            }
+
+        attraction_names = [item["name"] for item in day_attractions]
+        if len(attraction_names) >= 2:
+            morning = [f"游览{attraction_names[0]}"]
+            afternoon = [f"游览{attraction_names[1]}"]
+            evening = [f"游览{attraction_names[2]}"] if len(attraction_names) >= 3 else ["晚餐及自由活动"]
+        elif len(attraction_names) == 1:
+            morning = [f"前往{attraction_names[0]}"]
+            afternoon = [f"深度游览{attraction_names[0]}"]
+            evening = ["晚餐及自由活动"]
+        else:
+            morning = ["自由活动或休整"]
+            afternoon = ["自由探索"]
+            evening = ["晚餐"]
+
+        if day_index == 0:
+            morning.insert(0, f"抵达{city}，入住酒店")
+
+        return {
+            "morning": morning,
+            "afternoon": afternoon,
+            "evening": evening
+        }
+
+    # Build day-by-day itinerary
+    days_data = []
+    attraction_start = 0
+    for i in range(days):
+        day_date = start_date + timedelta(days=i)
+        day_num = i + 1
+        day_attraction_count = base_attractions_per_day + (1 if i < extra_attractions_days else 0)
+        day_attractions = attractions_data[attraction_start:attraction_start + day_attraction_count]
+        attraction_start += day_attraction_count
+
+        day_data = {
+            "day": f"Day {day_num}",
+            "date": day_date.strftime("%m/%d"),
+            "theme": f"{city}探索日" if i < days - 1 else "返程日",
+            "city": city,
+            "hotel": primary_hotel_name if i < days - 1 else None,
+            "attractions": day_attractions,
+            "metroLines": [],
+            "segments": build_segments_for_day(i, day_attractions),
+            "note": "根据实际行程调整"
+        }
+        days_data.append(day_data)
 
     side_trips_data = []
     for side_trip in parsed.get("side_trips", []):

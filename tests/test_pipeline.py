@@ -37,6 +37,12 @@ def test_generate_minimal():
     assert len(trip_data["days"]) == 2
     assert len(trip_data["hotels"]) == 1
     assert len(trip_data["attractions"]) == 1
+    assert trip_data["days"][0]["hotel"] == "长沙推荐酒店"
+    assert trip_data["days"][0]["attractions"] == []
+    assert trip_data["days"][0]["segments"]["morning"] == ["抵达长沙，入住酒店", "自由活动或休整"]
+    assert trip_data["days"][1]["hotel"] is None
+    assert trip_data["days"][1]["segments"]["morning"] == ["退房整理行李"]
+    assert trip_data["days"][1]["segments"]["afternoon"] == ["返程"]
 
 
 def test_generate_full(monkeypatch):
@@ -89,6 +95,15 @@ def test_generate_full(monkeypatch):
     assert trip_data["hotels"][0]["image"] == "https://hotel.example/grand"
     assert trip_data["stats"][-1]["value"] == "约 ¥2500/人"
     assert [line["name"] for line in trip_data["metroCoverage"]["lines"]] == ["1号线", "2号线"]
+    assert [day["hotel"] for day in trip_data["days"]] == ["君悦酒店", "君悦酒店", None]
+    assert [len(day["attractions"]) for day in trip_data["days"]] == [1, 1, 0]
+    assert trip_data["days"][0]["attractions"][0]["name"] == "岳麓山"
+    assert trip_data["days"][1]["attractions"][0]["name"] == "橘子洲"
+    assert trip_data["days"][0]["segments"]["morning"] == ["抵达长沙，入住酒店", "前往岳麓山"]
+    assert trip_data["days"][0]["segments"]["afternoon"] == ["深度游览岳麓山"]
+    assert trip_data["days"][1]["segments"]["morning"] == ["前往橘子洲"]
+    assert trip_data["days"][2]["segments"]["morning"] == ["退房整理行李"]
+    assert trip_data["days"][2]["segments"]["afternoon"] == ["返程"]
     assert queries == [
         ("岳麓山 长沙", 1),
         ("橘子洲 长沙", 1),
