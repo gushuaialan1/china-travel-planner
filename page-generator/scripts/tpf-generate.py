@@ -14,6 +14,7 @@ Features:
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -168,17 +169,36 @@ def normalize_side_trip(side_trip):
 
 def get_attraction_description(name, city, travel_info=None):
     """Return attraction description from search results when available."""
-    summary = None
+    attraction_info = None
     if isinstance(travel_info, dict):
         results = travel_info.get("results")
         if isinstance(results, dict):
             attraction_info = results.get(name)
-            if isinstance(attraction_info, dict):
-                summary = attraction_info.get("summary")
 
-    if isinstance(summary, str) and summary.strip():
-        return summary.strip()
+    if isinstance(attraction_info, dict):
+        # Try summary first
+        summary = (attraction_info.get("summary") or "").strip()
+        if summary and is_mostly_chinese(summary):
+            return summary
+
+        # Fallback: extract first Chinese snippet from sources
+        for source in attraction_info.get("sources", []):
+            content = (source.get("content") or "").strip()
+            if content and is_mostly_chinese(content):
+                # Take first 120 chars of meaningful content
+                snippet = content[:120].rsplit("。", 1)[0]
+                if snippet and len(snippet) > 10:
+                    return snippet + "。"
+
     return f"{city}著名景点——{name}"
+
+
+def is_mostly_chinese(text):
+    """Return True when the text contains enough Chinese characters to use directly."""
+    if not text:
+        return False
+    chinese_chars = len(re.findall(r"[\u4e00-\u9fff]", text))
+    return chinese_chars / max(len(text), 1) > 0.2
 
 
 def load_travel_info_for_output(output_path):

@@ -26,6 +26,17 @@ SCRIPT_NAME = "search_travel_info"
 DEFAULT_QUERY_TEMPLATE = "{city} {attraction} 攻略 开放时间 门票 推荐"
 TAVILY_API_URL = "https://api.tavily.com/search"
 TAVILY_TIMEOUT_SECONDS = 10
+PREFERRED_CHINESE_DOMAINS = [
+    "bendibao.com",
+    "ctrip.com",
+    "mafengwo.cn",
+    "dianping.com",
+    "baidu.com",
+    "zhihu.com",
+    "xiaohongshu.com",
+    "sohu.com",
+    "163.com",
+]
 
 
 def error_exit(msg: str) -> None:
