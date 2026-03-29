@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "title": "长沙 7天6晚旅行计划",
+    "subtitle": "2026/04/01 - 2026/04/07｜探索长沙",
+    "description": "长沙 7天行程规划，包含主要景点和交通安排。"
+  },
+  "hero": {
+    "title": "长沙 7天6晚旅行计划",
+    "subtitle": "探索长沙的精彩旅程",
+    "dateRange": "2026/04/01 - 2026/04/07",
+    "tags": [
+      "长沙",
+      "7天6晚",
+      "岳麓山",
+      "橘子洲"
+    ],
+    "summary": "这是一份长沙 7天的旅行计划，涵盖主要景点和实用建议。",
+    "heroImage": ""
+  },
+  "stats": [
+    {
+      "label": "出发",
+      "value": "出发地 → 长沙"
+    },
+    {
+      "label": "返程",
+      "value": "Day 7 下午"
+    },
+    {
+      "label": "时长",
+      "value": "7 天"
+    },
+    {
+      "label": "酒店",
+      "value": "五一广场"
+    },
+    {
+      "label": "预算",
+      "value": "约 ¥5000/人"
+    }
+  ],
+  "hotels": [
+    {
+      "phase": "全程",
+      "name": "五一广场精选酒店",
+      "dateRange": "2026/04/01 - 2026/04/07",
+      "station": "五一广场",
+      "status": "推荐",
+      "price": "约300元/晚",
+      "distanceToMetro": "地铁方便",
+      "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+      "highlights": [
+        "地铁1/2号线换乘站",
+        "步行至太平街5分钟",
+        "周边美食密集",
+        "交通枢纽"
+      ]
+    }
+  ],
+  "metroCoverage": {
+    "goal": "覆盖主要地铁线路，方便出行",
+    "lines": [
+      {
+        "name": "1号线",
+        "day": "Day 1",
+        "status": "planned"
+      },
+      {
+        "name": "S2线",
+        "day": "Day 2",
+        "status": "planned"
+      },
+      {
+        "name": "2号线",
+        "day": "Day 3",
+        "status": "planned"
+      },
+      {
+        "name": "3号线",
+        "day": "Day 4",
+        "status": "planned"
+      },
+      {
+        "name": "4号线",
+        "day": "Day 5",
+        "status": "planned"
+      }
+    ]
+  },
+  "days": [
+    {
+      "day": "Day 1",
+      "date": "04/01",
+      "theme": "长沙探索日",
+      "city": "长沙",
+      "hotel": "长沙酒店",
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": [
+          "晚餐及休息"
+        ]
+      },
+      "note": "根据实际行程调整"
+    },
+    {
+      "day": "Day 2",
+      "date": "04/02",
+      "theme": "长沙探索日",
+      "city": "长沙",
+      "hotel": "长沙酒店",
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": [
+          "晚餐及休息"
+        ]
+      },
+      "note": "根据实际行程调整"
+    },
+    {
+      "day": "Day 3",
+      "date": "04/03",
+      "theme": "长沙探索日",
+      "city": "长沙",
+      "hotel": "长沙酒店",
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": [
+          "晚餐及休息"
+        ]
+      },
+      "note": "根据实际行程调整"
+    },
+    {
+      "day": "Day 4",
+      "date": "04/04",
+      "theme": "长沙探索日",
+      "city": "长沙",
+      "hotel": "长沙酒店",
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": [
+          "晚餐及休息"
+        ]
+      },
+      "note": "根据实际行程调整"
+    },
+    {
+      "day": "Day 5",
+      "date": "04/05",
+      "theme": "长沙探索日",
+      "city": "长沙",
+      "hotel": "长沙酒店",
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": [
+          "晚餐及休息"
+        ]
+      },
+      "note": "根据实际行程调整"
+    },
+    {
+      "day": "Day 6",
+      "date": "04/06",
+      "theme": "长沙探索日",
+      "city": "长沙",
+      "hotel": "长沙酒店",
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": [
+          "晚餐及休息"
+        ]
+      },
+      "note": "根据实际行程调整"
+    },
+    {
+      "day": "Day 7",
+      "date": "04/07",
+      "theme": "返程日",
+      "city": "长沙",
+      "hotel": null,
+      "metroLines": [],
+      "segments": {
+        "morning": [
+          "早餐后出发"
+        ],
+        "afternoon": [
+          "游览主要景点"
+        ],
+        "evening": []
+      },
+      "note": "根据实际行程调整"
+    }
+  ],
+  "sideTrips": [
+    {
+      "name": "湘潭",
+      "date": "1天",
+      "role": "周边侧游",
+      "description": "毛泽东故居韶山；湘潭老城",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/%E9%9F%B6%E5%B1%B1_%E9%9F%B6%E5%B1%B1%E8%A1%8C%E6%97%85%E6%B8%B8%E5%88%97%E8%BD%A6%E4%B9%8BYZ25G-31950_02.jpg/1280px-%E9%9F%B6%E5%B1%B1_%E9%9F%B6%E5%B1%B1%E8%A1%8C%E6%97%85%E6%B8%B8%E5%88%97%E8%BD%A6%E4%B9%8BYZ25G-31950_02.jpg"
+    },
+    {
+      "name": "株洲",
+      "date": "半天",
+      "role": "周边侧游",
+      "description": "株洲方特欢乐世界",
+      "image": ""
+    },
+    {
+      "name": "岳阳",
+      "date": "1天",
+      "role": "周边侧游",
+      "description": "岳阳楼；洞庭湖；君山岛",
+      "image": ""
+    }
+  ],
+  "attractions": [
+    {
+      "name": "岳麓山",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/%E5%B2%B3%E9%BA%93%E5%B1%B1%E4%BF%AF%E7%9C%8B%E9%95%BF%E6%B2%99%E5%9F%8E_-_panoramio.jpg/1280px-%E5%B2%B3%E9%BA%93%E5%B1%B1%E4%BF%AF%E7%9C%8B%E9%95%BF%E6%B2%99%E5%9F%8E_-_panoramio.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "橘子洲",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/%E9%95%BF%E6%B2%99%E6%A9%98%E5%AD%90%E6%B4%B2.jpg/1280px-%E9%95%BF%E6%B2%99%E6%A9%98%E5%AD%90%E6%B4%B2.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "天心阁",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/%E9%95%BF%E6%B2%99%E5%A4%A9%E5%BF%83%E9%98%81.jpg/1280px-%E9%95%BF%E6%B2%99%E5%A4%A9%E5%BF%83%E9%98%81.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "太平街",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%E9%95%BF%E6%B2%99%E5%A4%AA%E5%B9%B3%E8%A1%97%E7%BE%8E%E9%A3%9F%E5%9F%8E.jpg/1280px-%E9%95%BF%E6%B2%99%E5%A4%AA%E5%B9%B3%E8%A1%97%E7%BE%8E%E9%A3%9F%E5%9F%8E.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "湖南省博物馆",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Far_view_of_Changsha_Museum%2C_picture2.jpg/1280px-Far_view_of_Changsha_Museum%2C_picture2.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "湖南第一师范",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Site_of_Chengnan_Academy.jpg/1280px-Site_of_Chengnan_Academy.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "黄兴南路步行街",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/9/96/Changshajianying.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "杜甫江阁",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/%E6%9D%9C%E7%94%AB%E6%B1%9F%E9%98%81.jpg/1280px-%E6%9D%9C%E7%94%AB%E6%B1%9F%E9%98%81.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "火宫殿",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/%E7%81%AB%E5%AE%AB%E6%AE%BF.jpg/1280px-%E7%81%AB%E5%AE%AB%E6%AE%BF.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    },
+    {
+      "name": "IFS国金中心",
+      "city": "长沙",
+      "type": "景点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/%E9%95%BF%E6%B2%99IFS%E5%9B%BD%E9%87%91%E4%B8%AD%E5%BF%83.jpg/1280px-%E9%95%BF%E6%B2%99IFS%E5%9B%BD%E9%87%91%E4%B8%AD%E5%BF%83.jpg",
+      "description": "长沙著名景点",
+      "bestFor": [
+        "观光",
+        "拍照"
+      ]
+    }
+  ],
+  "tips": [
+    "提前预订长沙酒店，节假日价格会上涨。",
+    "关注天气预报，准备合适的衣物。",
+    "下载当地地铁APP，方便查询线路。"
+  ]
+}
