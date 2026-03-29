@@ -76,6 +76,7 @@
           "price": { "type": "string" },
           "distanceToMetro": { "type": "string" },
           "image": { "type": "string" },
+          "bookingUrl": { "type": "string" },
           "highlights": {
             "type": "array",
             "items": { "type": "string" }
@@ -157,6 +158,7 @@
           "city": { "type": "string" },
           "type": { "type": "string" },
           "image": { "type": "string" },
+          "bookingUrl": { "type": "string" },
           "description": { "type": "string" },
           "bestFor": {
             "type": "array",

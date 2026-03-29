@@ -226,7 +226,62 @@ def load_travel_info_for_output(output_path):
     return None
 
 
-def generate_trip_data(parsed, options, travel_info=None):
+def load_flyai_data_for_output(output_path):
+    """Auto-load sibling flyai-data.json when writing into an output data dir."""
+    if not output_path:
+        return None
+
+    output_file = Path(output_path).expanduser().resolve()
+    candidate_paths = [output_file.parent / "flyai-data.json"]
+    if output_file.parent.name != "data":
+        candidate_paths.append(output_file.parent / "data" / "flyai-data.json")
+
+    for candidate in candidate_paths:
+        if not candidate.exists():
+            continue
+        try:
+            with open(candidate, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            info(f"Loaded flyai data: {candidate}")
+            return data
+        except json.JSONDecodeError as exc:
+            info(f"FlyAI data parse failed for {candidate}: {exc}")
+        except OSError as exc:
+            info(f"FlyAI data read failed for {candidate}: {exc}")
+    return None
+
+
+def get_flyai_attraction_info(name, flyai_data=None):
+    """Return matching FlyAI attraction info for a given attraction name."""
+    if not isinstance(flyai_data, dict):
+        return None
+
+    attractions = flyai_data.get("attractions")
+    if not isinstance(attractions, dict):
+        return None
+
+    match = attractions.get(name)
+    if isinstance(match, dict):
+        return match
+    return None
+
+
+def get_primary_flyai_hotel(flyai_data=None):
+    """Return the first FlyAI hotel result when available."""
+    if not isinstance(flyai_data, dict):
+        return None
+
+    hotels = flyai_data.get("hotels")
+    if not isinstance(hotels, list) or not hotels:
+        return None
+
+    first_hotel = hotels[0]
+    if isinstance(first_hotel, dict):
+        return first_hotel
+    return None
+
+
+def generate_trip_data(parsed, options, travel_info=None, flyai_data=None):
     """Generate complete trip-data.json structure."""
     
     city = parsed.get("city", "目的地")
@@ -243,8 +298,15 @@ def generate_trip_data(parsed, options, travel_info=None):
     # Build attractions with auto-images if requested
     attractions_data = []
     for attr in parsed.get("attractions", []):
-        image_url = None
-        if options.get("with_images"):
+        flyai_attraction = get_flyai_attraction_info(attr, flyai_data=flyai_data)
+        flyai_image = ""
+        booking_url = ""
+        if isinstance(flyai_attraction, dict):
+            flyai_image = str(flyai_attraction.get("mainPic") or "").strip()
+            booking_url = str(flyai_attraction.get("bookingUrl") or "").strip()
+
+        image_url = flyai_image or None
+        if not image_url and options.get("with_images"):
             image_url = search_images(f"{attr} {city}", limit=1)
         
         attractions_data.append({
@@ -252,6 +314,7 @@ def generate_trip_data(parsed, options, travel_info=None):
             "city": city,
             "type": "景点",
             "image": image_url or "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+            "bookingUrl": booking_url,
             "description": get_attraction_description(attr, city, travel_info=travel_info),
             "bestFor": ["观光", "拍照"]
         })
@@ -273,6 +336,9 @@ def generate_trip_data(parsed, options, travel_info=None):
     hotels_input = parsed.get("hotels") or []
     if hotels_input:
         hotels_data = []
+        flyai_hotel = get_primary_flyai_hotel(flyai_data=flyai_data)
+        flyai_hotel_image = str((flyai_hotel or {}).get("mainPic") or "").strip()
+        flyai_hotel_booking_url = str((flyai_hotel or {}).get("bookingUrl") or "").strip()
         for hotel in hotels_input:
             if isinstance(hotel, dict):
                 hotels_data.append({
@@ -283,7 +349,8 @@ def generate_trip_data(parsed, options, travel_info=None):
                     "status": hotel.get("status", "推荐"),
                     "price": hotel.get("price", "待定"),
                     "distanceToMetro": hotel.get("distanceToMetro", "地铁方便"),
-                    "image": hotel.get("image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"),
+                    "image": flyai_hotel_image or hotel.get("image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"),
+                    "bookingUrl": flyai_hotel_booking_url,
                     "highlights": hotel.get("highlights", ["位置便利", "交通方便"])
                 })
             else:
@@ -295,10 +362,14 @@ def generate_trip_data(parsed, options, travel_info=None):
                     "status": "推荐",
                     "price": "待定",
                     "distanceToMetro": "地铁方便",
-                    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                    "image": flyai_hotel_image or "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                    "bookingUrl": flyai_hotel_booking_url,
                     "highlights": ["位置便利", "交通方便"]
                 })
     else:
+        flyai_hotel = get_primary_flyai_hotel(flyai_data=flyai_data)
+        flyai_hotel_image = str((flyai_hotel or {}).get("mainPic") or "").strip()
+        flyai_hotel_booking_url = str((flyai_hotel or {}).get("bookingUrl") or "").strip()
         hotels_data = [
             {
                 "phase": "全程",
@@ -308,7 +379,8 @@ def generate_trip_data(parsed, options, travel_info=None):
                 "status": "推荐",
                 "price": "待定",
                 "distanceToMetro": "地铁方便",
-                "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                "image": flyai_hotel_image or "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+                "bookingUrl": flyai_hotel_booking_url,
                 "highlights": ["位置便利", "交通方便"]
             }
         ]
@@ -469,7 +541,8 @@ def main():
     }
 
     travel_info = load_travel_info_for_output(args.output)
-    trip_data = generate_trip_data(parsed, options, travel_info=travel_info)
+    flyai_data = load_flyai_data_for_output(args.output)
+    trip_data = generate_trip_data(parsed, options, travel_info=travel_info, flyai_data=flyai_data)
     
     # Output
     indent = 2 if args.pretty else None
